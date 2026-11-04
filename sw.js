@@ -1,5 +1,5 @@
 /* Gaji Rotasi — service worker (offline cache) */
-const CACHE = 'gaji-rotasi-v1.2.0';
+const CACHE = 'gaji-rotasi-v1.4.0';
 const ASSETS = ['./', './index.html', './manifest.json'];
 
 self.addEventListener('install', function (event) {

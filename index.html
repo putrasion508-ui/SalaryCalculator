@@ -22,6 +22,7 @@
   --on:#c8510e;--on-bg:#fde6d6;--on-ink:#9a3b05;
   --ton:#e9ab17;--ton-fg:#2b1e00;--ton-bg:#fcf0cc;--ton-ink:#7a5600;
   --toff:#2f66c9;--toff-bg:#e0e9fb;--toff-ink:#1f4f9f;
+  --visa:#0f8b7d;--visa-bg:#d5f1ec;--visa-ink:#0b6b60;--med:#b0307f;--med-bg:#f8e0ef;--med-ink:#8f2266;
   --off:#e3eaf0;--off-ink:#647683;
   --plus:#1d7f4e;--plus-bg:#dcf1e5;--minus:#b8382a;--minus-bg:#fbe3df;
   --warn:#8a5300;--warn-bg:#fdeed6;
@@ -39,6 +40,7 @@
     --on:#cf5a17;--on-bg:#3a1f0e;--on-ink:#ffab78;
     --ton:#e2a514;--ton-fg:#2b1e00;--ton-bg:#3a2d08;--ton-ink:#f3c95a;
     --toff:#3b72d6;--toff-bg:#16264a;--toff-ink:#9cbcff;
+    --visa:#16a090;--visa-bg:#0f3531;--visa-ink:#6fe0d1;--med:#c4448f;--med-bg:#3a1530;--med-ink:#ff9fd6;
     --off:#1a2f3c;--off-ink:#8ba1ae;
     --plus:#55c48d;--plus-bg:#123626;--minus:#f07563;--minus-bg:#3c1712;
     --warn:#efa83a;--warn-bg:#3a2a0e;
@@ -64,10 +66,17 @@ h1,h2,h3{margin:0}
 .logo{width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,.1);display:grid;place-items:center;flex:none}
 .appbar h1{font-family:var(--disp);font-weight:700;font-size:23px;letter-spacing:.2px;line-height:1.1}
 .appbar p{margin:1px 0 0;font-size:12.5px;color:#a9c0cf}
+.ab-t{flex:1;min-width:0}
+.lang{display:flex;flex:none;background:rgba(255,255,255,.1);border-radius:999px;padding:3px;gap:2px}
+.lang button{border:0;background:transparent;color:#cfe0ea;font-weight:750;font-size:13px;min-width:42px;min-height:36px;border-radius:999px;padding:0 8px}
+.lang button[aria-pressed="true"]{background:#fff;color:#10283a}
 main{max-width:560px;margin:0 auto;padding:0 14px 8px}
 
 /* month / year navigator */
-.navbar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:14px 0 4px}
+.navbar{position:sticky;top:env(safe-area-inset-top);z-index:15;display:flex;align-items:center;justify-content:space-between;gap:8px;margin:4px -14px 0;padding:10px 14px 8px;background:var(--bg);transition:box-shadow .15s}
+.navbar.stuck{box-shadow:0 8px 16px -10px rgba(10,30,45,.45);border-bottom:1px solid var(--line)}
+body::before{content:"";position:fixed;left:0;right:0;top:0;height:env(safe-area-inset-top);background:var(--navy);z-index:16}
+.nav-sentinel{height:1px;margin-bottom:-1px}
 .icon-btn{width:46px;height:46px;border-radius:50%;border:1px solid var(--line2);background:var(--surface);font-size:24px;line-height:1;display:grid;place-items:center;color:var(--ink);padding:0;flex:none}
 .icon-btn:disabled{opacity:.35;cursor:default}
 .nav-c{text-align:center;flex:1;min-width:0}
@@ -129,15 +138,19 @@ select.inp,.field select,.sel-sm{background-image:url("data:image/svg+xml,%3Csvg
 .cfg-foot .derived{flex:1;min-width:190px}
 
 /* day type picker */
-.brushes{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}
-.brushes button{display:grid;grid-template-columns:16px minmax(0,1fr);column-gap:9px;align-items:center;text-align:left;min-height:56px;padding:8px 10px;border-radius:13px;border:2px solid var(--line);background:var(--surface)}
-.brushes .sw{width:16px;height:16px;border-radius:5px;grid-row:span 2}
-.brushes b{font-size:14.5px;line-height:1.15}
-.brushes small{font-size:12px;color:var(--muted);line-height:1.2}
-.sw.on{background:var(--on)}.sw.ton{background:var(--ton)}.sw.toff{background:var(--toff)}.sw.off{background:var(--off);box-shadow:inset 0 0 0 1px var(--line2)}
+.brushes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+@media (min-width:480px){.brushes{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.brushes button{display:grid;grid-template-columns:14px minmax(0,1fr);column-gap:8px;align-items:center;text-align:left;min-height:52px;padding:6px 10px;border-radius:13px;border:2px solid var(--line);background:var(--surface)}
+.brushes .sw{width:14px;height:14px;border-radius:4px;grid-row:span 2}
+.brushes b{font-size:14px;line-height:1.15}
+.brushes small{font-size:11.5px;color:var(--muted);line-height:1.2}
+@media (max-width:359px){.brushes button{padding:6px 8px;column-gap:6px}.brushes b{font-size:13px}.brushes small{font-size:11px}}
+.sw.on{background:var(--on)}.sw.ton{background:var(--ton)}.sw.toff{background:var(--toff)}.sw.visa{background:var(--visa)}.sw.med{background:var(--med)}.sw.off{background:var(--off);box-shadow:inset 0 0 0 1px var(--line2)}
 .brushes button[aria-checked="true"][data-brush="ON"]{border-color:var(--on);background:var(--on-bg)}
 .brushes button[aria-checked="true"][data-brush="TON"]{border-color:var(--ton);background:var(--ton-bg)}
 .brushes button[aria-checked="true"][data-brush="TOFF"]{border-color:var(--toff);background:var(--toff-bg)}
+.brushes button[aria-checked="true"][data-brush="VISA"]{border-color:var(--visa);background:var(--visa-bg)}
+.brushes button[aria-checked="true"][data-brush="MED"]{border-color:var(--med);background:var(--med-bg)}
 .brushes button[aria-checked="true"][data-brush="OFF"]{border-color:var(--ink);background:var(--surface2)}
 
 /* calendar */
@@ -150,6 +163,8 @@ select.inp,.field select,.sel-sm{background-image:url("data:image/svg+xml,%3Csvg
 .cal-day.on{background:var(--on);color:#fff}
 .cal-day.ton{background:var(--ton);color:var(--ton-fg)}
 .cal-day.toff{background:var(--toff);color:#fff}
+.cal-day.visa{background:var(--visa);color:#fff}
+.cal-day.med{background:var(--med);color:#fff}
 .cal-day i{font-style:normal;font-family:var(--body);font-size:8.5px;font-weight:800;margin-top:2px;letter-spacing:.2px}
 .cal-day.today{border-color:var(--ink)}
 .cal-day:active{transform:scale(.94)}
@@ -158,6 +173,8 @@ select.inp,.field select,.sel-sm{background-image:url("data:image/svg+xml,%3Csvg
 .chip.on{background:var(--on-bg);color:var(--on-ink);border-color:transparent}
 .chip.ton{background:var(--ton-bg);color:var(--ton-ink);border-color:transparent}
 .chip.toff{background:var(--toff-bg);color:var(--toff-ink);border-color:transparent}
+.chip.visa{background:var(--visa-bg);color:var(--visa-ink);border-color:transparent}
+.chip.med{background:var(--med-bg);color:var(--med-ink);border-color:transparent}
 .chip.off{background:var(--off);color:var(--off-ink);border-color:transparent}
 .chip.warn{background:var(--warn-bg);color:var(--warn);border-color:transparent}
 .row-btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
@@ -244,7 +261,7 @@ summary{cursor:pointer;color:var(--toff-ink);font-weight:650;font-size:14px;padd
 .st-row{display:grid;grid-template-columns:30px repeat(31,minmax(0,1fr));gap:2px;align-items:center}
 .st-row span{font-size:11.5px;color:var(--muted);font-weight:650}
 .st-row i{display:block;height:13px;border-radius:2px;background:var(--off)}
-.st-row i.on{background:var(--on)}.st-row i.ton{background:var(--ton)}.st-row i.toff{background:var(--toff)}
+.st-row i.on{background:var(--on)}.st-row i.ton{background:var(--ton)}.st-row i.toff{background:var(--toff)}.st-row i.visa{background:var(--visa)}.st-row i.med{background:var(--med)}
 .st-row i.x{background:transparent}
 .st-row i.today{box-shadow:0 0 0 1.5px var(--ink)}
 .legend{display:flex;flex-wrap:wrap;gap:12px;margin-top:10px;font-size:12.5px;color:var(--muted)}
@@ -331,101 +348,108 @@ body.on-bulan .toast{bottom:calc(var(--tb-h) + var(--sb-h) + 14px + env(safe-are
 <header class="appbar">
   <div class="appbar-in">
     <div class="logo" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 26 26" fill="none"><path d="M13 3v15M17.5 6.5c-.8-1.2-2.5-1.9-4.5-1.9-2.6 0-4.4 1.3-4.4 3.1 0 4.3 9 2.2 9 6.4 0 1.9-1.9 3.2-4.6 3.2-2.1 0-3.9-.8-4.8-2.1" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/><path d="M1 22c2.2 0 2.2-1.6 4.4-1.6S7.6 22 9.8 22s2.2-1.6 4.4-1.6S16.4 22 18.6 22s2.2-1.6 4.4-1.6" stroke="#e98a4f" stroke-width="2" stroke-linecap="round"/></svg></div>
-    <div><h1>Gaji Rotasi</h1><p>Hitung gaji bulanan rotasi ON/OFF</p></div>
+    <div class="ab-t"><h1>Gaji Rotasi</h1><p data-i18n="app.sub">Hitung gaji bulanan rotasi ON/OFF</p></div>
+    <div class="lang" role="group" id="langSwitch" data-i18n-aria="lang.aria" aria-label="Bahasa">
+      <button type="button" data-lang="id" aria-pressed="true" lang="id" title="Bahasa Indonesia">ID</button>
+      <button type="button" data-lang="en" aria-pressed="false" lang="en" title="English">EN</button>
+    </div>
   </div>
 </header>
 
 <main>
 <!-- ================= BULAN ================= -->
 <section class="tab" id="tab-bulan" data-tab="bulan">
-  <div class="navbar">
-    <button type="button" class="icon-btn" id="prevMonth" aria-label="Bulan sebelumnya">‹</button>
+  <div class="nav-sentinel" aria-hidden="true"></div>
+  <div class="navbar" id="monthBar">
+    <button type="button" class="icon-btn" id="prevMonth" data-i18n-aria="aria.prevMonth" aria-label="Bulan sebelumnya">‹</button>
     <div class="nav-c">
       <div class="period-title" id="periodTitle">-</div>
       <div class="period-sub" id="periodSub">-</div>
     </div>
-    <button type="button" class="icon-btn" id="nextMonth" aria-label="Bulan berikutnya">›</button>
+    <button type="button" class="icon-btn" id="nextMonth" data-i18n-aria="aria.nextMonth" aria-label="Bulan berikutnya">›</button>
   </div>
-  <div class="status-row"><span class="badge none" id="statusBadge">-</span><button type="button" class="link-btn" id="goThisMonth">Ke bulan ini</button></div>
+  <div class="status-row"><span class="badge none" id="statusBadge">-</span><button type="button" class="link-btn" id="goThisMonth" data-i18n="nav.thisMonth">Ke bulan ini</button></div>
 
   <div class="welcome" id="welcome" hidden>
-    <h2>Mulai di sini</h2>
+    <h2 data-i18n="welcome.t">Mulai di sini</h2>
     <ol>
-      <li>Isi gaji tahunan (USD), asuransi, dan pension per bulan.</li>
-      <li>Pilih jenis hari, lalu ketuk tanggal di kalender.</li>
-      <li>Tambahkan claim atau slopchest kalau ada, lalu tekan <b>Simpan</b>.</li>
+      <li data-i18n-html="welcome.1"></li>
+      <li data-i18n-html="welcome.2"></li>
+      <li data-i18n-html="welcome.3"></li>
     </ol>
   </div>
 
   <section class="step" id="step1">
-    <div class="step-h"><span class="n">1</span><div><h2>Gaji &amp; potongan tetap</h2><p id="cfgHint"></p></div></div>
+    <div class="step-h"><span class="n">1</span><div><h2 data-i18n="s1.t">Gaji &amp; potongan tetap</h2><p id="cfgHint"></p></div></div>
     <div id="cfgSummary" hidden>
       <div class="cfg-sum" id="cfgSumGrid"></div>
-      <div class="cfg-foot"><div class="derived" id="derivedSum"></div><button type="button" class="btn sm" id="btnCfgEdit">Ubah</button></div>
+      <div class="cfg-foot"><div class="derived" id="derivedSum"></div><button type="button" class="btn sm" id="btnCfgEdit" data-i18n="btn.edit">Ubah</button></div>
     </div>
     <div id="cfgForm">
-      <label class="field" id="fAnnual"><span>Gaji tahunan (annual salary, USD)</span>
+      <label class="field" id="fAnnual"><span data-i18n="f.annual">Gaji tahunan (annual salary, USD)</span>
         <div class="money"><i>$</i><input id="inAnnual" inputmode="decimal" autocomplete="off" enterkeyhint="done" placeholder="40500"></div>
         <small class="err" id="errAnnual"></small></label>
       <div class="grid2">
-        <label class="field" id="fInsurance"><span>Asuransi per bulan</span>
+        <label class="field" id="fInsurance"><span data-i18n="f.ins">Asuransi per bulan</span>
           <div class="money"><i>$</i><input id="inInsurance" inputmode="decimal" autocomplete="off" enterkeyhint="done" placeholder="0"></div>
           <small class="err" id="errInsurance"></small></label>
-        <label class="field" id="fPension"><span>Pension plan per bulan</span>
+        <label class="field" id="fPension"><span data-i18n="f.pen">Pension plan per bulan</span>
           <div class="money"><i>$</i><input id="inPension" inputmode="decimal" autocomplete="off" enterkeyhint="done" placeholder="0"></div>
           <small class="err" id="errPension"></small></label>
       </div>
-      <div class="cfg-foot"><div class="derived" id="derived"></div><button type="button" class="btn sm primary" id="btnCfgDone">Selesai</button></div>
+      <div class="cfg-foot"><div class="derived" id="derived"></div><button type="button" class="btn sm primary" id="btnCfgDone" data-i18n="btn.done">Selesai</button></div>
     </div>
   </section>
 
   <section class="step" id="step2">
-    <div class="step-h"><span class="n">2</span><div><h2>Tandai hari</h2><p>Pilih jenis hari, lalu ketuk tanggal. Ketuk lagi untuk kembali ke OFF.</p></div></div>
-    <div class="brushes" role="radiogroup" aria-label="Jenis hari" id="brushSeg">
-      <button type="button" role="radio" data-brush="ON" aria-checked="true"><span class="sw on"></span><b>ON</b><small>130%, kerja di kapal</small></button>
-      <button type="button" role="radio" data-brush="TON" aria-checked="false"><span class="sw ton"></span><b>Travel ON</b><small>100%, berangkat</small></button>
-      <button type="button" role="radio" data-brush="TOFF" aria-checked="false"><span class="sw toff"></span><b>Travel OFF</b><small>100%, pulang</small></button>
-      <button type="button" role="radio" data-brush="OFF" aria-checked="false"><span class="sw off"></span><b>OFF</b><small>70%, di rumah</small></button>
+    <div class="step-h"><span class="n">2</span><div><h2 data-i18n="s2.t">Tandai hari</h2><p data-i18n="s2.p"></p></div></div>
+    <div class="brushes" role="radiogroup" data-i18n-aria="aria.dayType" aria-label="Jenis hari" id="brushSeg">
+      <button type="button" role="radio" data-brush="ON" aria-checked="true"><span class="sw on"></span><b>ON</b><small data-i18n="b.on"></small></button>
+      <button type="button" role="radio" data-brush="TON" aria-checked="false"><span class="sw ton"></span><b>Travel ON</b><small data-i18n="b.ton"></small></button>
+      <button type="button" role="radio" data-brush="TOFF" aria-checked="false"><span class="sw toff"></span><b>Travel OFF</b><small data-i18n="b.toff"></small></button>
+      <button type="button" role="radio" data-brush="VISA" aria-checked="false"><span class="sw visa"></span><b>Visa day</b><small data-i18n="b.visa"></small></button>
+      <button type="button" role="radio" data-brush="MED" aria-checked="false"><span class="sw med"></span><b>Medical day</b><small data-i18n="b.med"></small></button>
+      <button type="button" role="radio" data-brush="OFF" aria-checked="false"><span class="sw off"></span><b>OFF</b><small data-i18n="b.off"></small></button>
     </div>
-    <div class="cal-head" aria-hidden="true"><span>Sen</span><span>Sel</span><span>Rab</span><span>Kam</span><span>Jum</span><span>Sab</span><span>Min</span></div>
+    <div class="cal-head" aria-hidden="true"><span data-i18n="wd.0"></span><span data-i18n="wd.1"></span><span data-i18n="wd.2"></span><span data-i18n="wd.3"></span><span data-i18n="wd.4"></span><span data-i18n="wd.5"></span><span data-i18n="wd.6"></span></div>
     <div class="cal-grid" id="calGrid"></div>
     <div class="cal-counts" id="calCounts"></div>
     <div class="row-btns">
-      <button type="button" class="btn" id="btnRange">Isi rentang tanggal</button>
-      <button type="button" class="btn ghost danger-text" id="btnClearMonth">Kosongkan bulan</button>
+      <button type="button" class="btn" id="btnRange" data-i18n="btn.range">Isi rentang tanggal</button>
+      <button type="button" class="btn ghost danger-text" id="btnClearMonth" data-i18n="btn.clearMonth">Kosongkan bulan</button>
     </div>
   </section>
 
   <section class="step" id="step3">
-    <div class="step-h"><span class="n">3</span><div><h2>Claim &amp; slopchest</h2><p>Claim menambah gaji. Slopchest (belanja di kapal) mengurangi gaji.</p></div></div>
+    <div class="step-h"><span class="n">3</span><div><h2 data-i18n="s3.t">Claim &amp; slopchest</h2><p data-i18n="s3.p"></p></div></div>
     <div class="ledger plus">
-      <div class="ledger-h"><h3>Claim expenses<em>Uang yang diganti perusahaan</em></h3><span id="claimHint"></span></div>
+      <div class="ledger-h"><h3><span data-i18n="claim.t">Claim expenses</span><em data-i18n="claim.em"></em></h3><span id="claimHint"></span></div>
       <ul class="items" id="claimList"></ul>
       <div class="add-row">
-        <input class="inp" id="inClaimDesc" maxlength="80" autocomplete="off" enterkeyhint="next" placeholder="Keterangan, mis. taksi bandara" aria-label="Keterangan claim">
-        <div class="money"><i>$</i><input class="inp" id="inClaimAmt" inputmode="decimal" autocomplete="off" enterkeyhint="done" placeholder="0" aria-label="Nominal claim"></div>
-        <button type="button" class="btn" id="btnAddClaim">Tambah claim</button>
+        <input class="inp" id="inClaimDesc" maxlength="80" autocomplete="off" enterkeyhint="next" data-i18n-ph="claim.ph" data-i18n-aria="claim.aDesc">
+        <div class="money"><i>$</i><input class="inp" id="inClaimAmt" inputmode="decimal" autocomplete="off" enterkeyhint="done" placeholder="0" data-i18n-aria="claim.aAmt"></div>
+        <button type="button" class="btn" id="btnAddClaim" data-i18n="claim.add">Tambah claim</button>
       </div>
       <small class="err" id="errClaim"></small>
     </div>
     <div class="ledger minus">
-      <div class="ledger-h"><h3>Slopchest<em>Belanja di kapal, dipotong dari gaji</em></h3><span id="slopHint"></span></div>
+      <div class="ledger-h"><h3><span data-i18n="slop.t">Slopchest</span><em data-i18n="slop.em"></em></h3><span id="slopHint"></span></div>
       <ul class="items" id="slopList"></ul>
       <div class="add-row">
-        <input class="inp" id="inSlopDesc" maxlength="80" autocomplete="off" enterkeyhint="next" placeholder="Keterangan, mis. rokok, snack" aria-label="Keterangan slopchest">
-        <div class="money"><i>$</i><input class="inp" id="inSlopAmt" inputmode="decimal" autocomplete="off" enterkeyhint="done" placeholder="0" aria-label="Nominal slopchest"></div>
-        <button type="button" class="btn" id="btnAddSlop">Tambah slopchest</button>
+        <input class="inp" id="inSlopDesc" maxlength="80" autocomplete="off" enterkeyhint="next" data-i18n-ph="slop.ph" data-i18n-aria="slop.aDesc">
+        <div class="money"><i>$</i><input class="inp" id="inSlopAmt" inputmode="decimal" autocomplete="off" enterkeyhint="done" placeholder="0" data-i18n-aria="slop.aAmt"></div>
+        <button type="button" class="btn" id="btnAddSlop" data-i18n="slop.add">Tambah slopchest</button>
       </div>
       <small class="err" id="errSlop"></small>
     </div>
   </section>
 
   <section class="step" id="step4">
-    <div class="step-h"><span class="n">4</span><div><h2>Rincian gaji</h2><p>Hari dihitung tanggal 1 sampai akhir bulan, dibayar bulan berikutnya.</p></div></div>
+    <div class="step-h"><span class="n">4</span><div><h2 data-i18n="s4.t">Rincian gaji</h2><p data-i18n="s4.p"></p></div></div>
     <div id="resultCard"></div>
     <div class="row-btns">
-      <button type="button" class="btn" id="btnRevert" hidden>Kembalikan ke versi tersimpan</button>
-      <button type="button" class="btn ghost danger-text" id="btnDelHist" hidden>Hapus dari riwayat</button>
+      <button type="button" class="btn" id="btnRevert" data-i18n="btn.revert" hidden>Kembalikan ke versi tersimpan</button>
+      <button type="button" class="btn ghost danger-text" id="btnDelHist" data-i18n="btn.delHist" hidden>Hapus dari riwayat</button>
     </div>
   </section>
 
@@ -434,42 +458,43 @@ body.on-bulan .toast{bottom:calc(var(--tb-h) + var(--sb-h) + 14px + env(safe-are
 
 <!-- ================= TAHUN ================= -->
 <section class="tab" id="tab-tahun" data-tab="tahun" hidden>
-  <div class="navbar">
-    <button type="button" class="icon-btn" id="yearPrev" aria-label="Tahun sebelumnya">‹</button>
-    <div class="nav-c"><div class="period-title" id="yearTitle">-</div><div class="period-sub">Annual Day Account dan rekap tahunan</div></div>
-    <button type="button" class="icon-btn" id="yearNext" aria-label="Tahun berikutnya">›</button>
+  <div class="nav-sentinel" aria-hidden="true"></div>
+  <div class="navbar" id="yearBar">
+    <button type="button" class="icon-btn" id="yearPrev" data-i18n-aria="aria.prevYear" aria-label="Tahun sebelumnya">‹</button>
+    <div class="nav-c"><div class="period-title" id="yearTitle">-</div><div class="period-sub" data-i18n="year.sub"></div></div>
+    <button type="button" class="icon-btn" id="yearNext" data-i18n-aria="aria.nextYear" aria-label="Tahun berikutnya">›</button>
   </div>
 
   <section class="panel" id="daCard">
     <div id="daSummary"></div>
-    <details class="rules" id="daRules"><summary>Aturan Day Account</summary>
+    <details class="rules" id="daRules"><summary data-i18n="rules.t">Aturan Day Account</summary>
       <div class="grid2">
-        <label class="field" id="fDaExpected"><span>Expected hari kerja per tahun</span><div class="suffix"><input id="inDaExpected" inputmode="decimal" autocomplete="off" enterkeyhint="done"><i>hari</i></div><small class="err" id="errDaExpected"></small></label>
-        <label class="field" id="fDaRate"><span>Bayaran kelebihan hari</span><div class="suffix"><input id="inDaRate" inputmode="decimal" autocomplete="off" enterkeyhint="done"><i>%</i></div><small class="err" id="errDaRate"></small></label>
+        <label class="field" id="fDaExpected"><span data-i18n="rules.expected"></span><div class="suffix"><input id="inDaExpected" inputmode="decimal" autocomplete="off" enterkeyhint="done"><i data-i18n="rules.days"></i></div><small class="err" id="errDaExpected"></small></label>
+        <label class="field" id="fDaRate"><span data-i18n="rules.rate"></span><div class="suffix"><input id="inDaRate" inputmode="decimal" autocomplete="off" enterkeyhint="done"><i>%</i></div><small class="err" id="errDaRate"></small></label>
       </div>
-      <label class="check"><input type="checkbox" id="inDaTravel"> Hari Travel ON/OFF ikut dihitung sebagai hari kerja</label>
-      <label class="field"><span>Kelebihan dibayar bersama gaji bulan (tahun berikutnya)</span><select id="inDaPayMonth"></select></label>
-      <p class="tiny">Berlaku untuk semua tahun. Slip yang sudah disimpan tetap memakai aturan saat disimpan.</p>
+      <label class="check"><input type="checkbox" id="inDaTravel"> <span data-i18n="rules.travel"></span></label>
+      <label class="field"><span data-i18n="rules.payMonth"></span><select id="inDaPayMonth"></select></label>
+      <p class="tiny" data-i18n="rules.note"></p>
     </details>
   </section>
 
   <section class="panel">
-    <div class="panel-h"><h2>Strip rotasi</h2></div>
-    <div class="strip" id="yearStrip" aria-label="Hari kerja sepanjang tahun"></div>
-    <div class="legend"><span><i class="sw on"></i>ON</span><span><i class="sw ton"></i>Travel ON</span><span><i class="sw toff"></i>Travel OFF</span><span><i class="sw off"></i>OFF</span></div>
+    <div class="panel-h"><h2 data-i18n="strip.t">Strip rotasi</h2></div>
+    <div class="strip" id="yearStrip" data-i18n-aria="aria.strip" aria-label="Hari kerja sepanjang tahun"></div>
+    <div class="legend"><span><i class="sw on"></i>ON</span><span><i class="sw ton"></i>Travel ON</span><span><i class="sw toff"></i>Travel OFF</span><span><i class="sw visa"></i>Visa</span><span><i class="sw med"></i>Medical</span><span><i class="sw off"></i>OFF</span></div>
   </section>
 
   <section class="panel">
-    <div class="panel-h"><h2>Per bulan</h2></div>
+    <div class="panel-h"><h2 data-i18n="months.t">Per bulan</h2></div>
     <div class="ym" id="yearMonths"></div>
-    <p class="tiny">Ketuk bulan untuk membuka atau mengubahnya.</p>
+    <p class="tiny" data-i18n="months.tip"></p>
   </section>
 
   <section class="panel">
-    <div class="panel-h"><h2>Total tersimpan</h2>
-      <select class="sel-sm" id="histGroup" aria-label="Kelompokkan">
-        <option value="work">Per periode kerja</option>
-        <option value="pay">Per bulan dibayar</option>
+    <div class="panel-h"><h2 data-i18n="totals.t">Total tersimpan</h2>
+      <select class="sel-sm" id="histGroup" data-i18n-aria="aria.group" aria-label="Kelompokkan">
+        <option value="work" data-i18n="group.work">Per periode kerja</option>
+        <option value="pay" data-i18n="group.pay">Per bulan dibayar</option>
       </select>
     </div>
     <div id="yearTotals"></div>
@@ -480,21 +505,21 @@ body.on-bulan .toast{bottom:calc(var(--tb-h) + var(--sb-h) + 14px + env(safe-are
 <section class="tab" id="tab-export" data-tab="export" hidden>
   <section class="panel" style="margin-top:14px">
     <div class="panel-h"><h2>Export PDF</h2></div>
-    <p class="tiny" style="margin:-4px 0 12px">PDF dibuat dari bulan yang sudah disimpan.</p>
+    <p class="tiny" style="margin:-4px 0 12px" data-i18n="ex.note"></p>
     <div class="range">
-      <div class="field"><span>Dari</span><div class="sel2"><select class="inp" id="exFromM" aria-label="Bulan awal"></select><select class="inp" id="exFromY" aria-label="Tahun awal"></select></div></div>
-      <div class="field"><span>Sampai</span><div class="sel2"><select class="inp" id="exToM" aria-label="Bulan akhir"></select><select class="inp" id="exToY" aria-label="Tahun akhir"></select></div></div>
+      <div class="field"><span data-i18n="ex.from">Dari</span><div class="sel2"><select class="inp" id="exFromM" data-i18n-aria="ex.aFromM"></select><select class="inp" id="exFromY" data-i18n-aria="ex.aFromY"></select></div></div>
+      <div class="field"><span data-i18n="ex.to">Sampai</span><div class="sel2"><select class="inp" id="exToM" data-i18n-aria="ex.aToM"></select><select class="inp" id="exToY" data-i18n-aria="ex.aToY"></select></div></div>
     </div>
     <div class="row-btns" style="margin-top:2px">
-      <button type="button" class="chip-btn" id="exThisYear">Tahun ini</button>
-      <button type="button" class="chip-btn" id="exAll">Semua riwayat</button>
+      <button type="button" class="chip-btn" id="exThisYear" data-i18n="ex.thisYear">Tahun ini</button>
+      <button type="button" class="chip-btn" id="exAll" data-i18n="ex.all">Semua riwayat</button>
     </div>
-    <label class="opt" id="optDates"><input type="radio" name="exMode" value="dates" checked><div><b>Tanggal ON/OFF saja</b><span>Untuk tracking hari kerja, rotasi, dan Day Account, tanpa nominal gaji</span></div></label>
-    <label class="opt" id="optFull"><input type="radio" name="exMode" value="full"><div><b>Lengkap dengan gaji</b><span>Tanggal, rincian gaji, potongan, slopchest, claim, dan Day Account</span></div></label>
+    <label class="opt" id="optDates"><input type="radio" name="exMode" value="dates" checked><div><b data-i18n="ex.datesT"></b><span data-i18n="ex.datesD"></span></div></label>
+    <label class="opt" id="optFull"><input type="radio" name="exMode" value="full"><div><b data-i18n="ex.fullT"></b><span data-i18n="ex.fullD"></span></div></label>
     <div class="ex-info" id="exInfo"></div>
     <div class="save-bar">
       <button type="button" class="btn primary big" id="btnExport">Download PDF</button>
-      <button type="button" class="btn" id="btnShare" hidden>Bagikan / Simpan ke Files</button>
+      <button type="button" class="btn" id="btnShare" data-i18n="ex.share" hidden>Bagikan / Simpan ke Files</button>
     </div>
   </section>
 </section>
@@ -502,41 +527,41 @@ body.on-bulan .toast{bottom:calc(var(--tb-h) + var(--sb-h) + 14px + env(safe-are
 <!-- ================= LAINNYA ================= -->
 <section class="tab" id="tab-data" data-tab="data" hidden>
   <section class="panel" style="margin-top:14px">
-    <h2>Cara pakai</h2>
+    <h2 data-i18n="guide.t">Cara pakai</h2>
     <ol class="guide">
-      <li>Di tab <b>Bulan</b>, isi gaji tahunan, asuransi, dan pension. Nilainya otomatis dipakai bulan-bulan berikutnya.</li>
-      <li>Pilih jenis hari (ON, Travel ON, Travel OFF, OFF), lalu ketuk tanggal. Untuk satu hitch sekaligus, pakai <b>Isi rentang tanggal</b>.</li>
-      <li>Tambahkan claim (uang diganti) dan slopchest (belanja di kapal) kalau ada.</li>
-      <li>Tekan <b>Simpan</b>. Bulan yang disimpan masuk riwayat dan bisa diexport PDF.</li>
-      <li>Buka tab <b>Tahun</b> untuk melihat Annual Day Account: apakah hari kerja melebihi 182,5 hari.</li>
+      <li data-i18n-html="guide.1"></li>
+      <li data-i18n-html="guide.2"></li>
+      <li data-i18n-html="guide.3"></li>
+      <li data-i18n-html="guide.4"></li>
+      <li data-i18n-html="guide.5"></li>
     </ol>
   </section>
   <section class="panel">
-    <h2>Cara hitung</h2>
+    <h2 data-i18n="calc.t">Cara hitung</h2>
     <ul class="formula">
-      <li><b>Daily rate (DR)</b> = annual ÷ 365</li>
-      <li><b>Guarantee</b> = 70% × annual ÷ 12, tetap setiap bulan</li>
-      <li><b>Tambahan ON</b> = 0,6 × DR per hari (130% − 70%)</li>
-      <li><b>Tambahan Travel ON / Travel OFF</b> = 0,3 × DR per hari (100% − 70%)</li>
-      <li><b>Annual Day Account</b> = kelebihan hari di atas 182,5 × 130% × DR, dibayar tahun berikutnya</li>
-      <li><b>Diterima</b> = gaji kotor − asuransi − pension − slopchest + claim</li>
+      <li data-i18n-html="calc.1"></li>
+      <li data-i18n-html="calc.2"></li>
+      <li data-i18n-html="calc.3"></li>
+      <li data-i18n-html="calc.4"></li>
+      <li data-i18n-html="calc.5"></li>
+      <li data-i18n-html="calc.6"></li>
     </ul>
-    <p class="tiny">Kalau ON tepat 182,5 hari setahun, total gaji kotor sama dengan annual salary.</p>
+    <p class="tiny" data-i18n="calc.note"></p>
   </section>
   <section class="panel">
-    <h2>Backup &amp; pulihkan</h2>
-    <p class="tiny" style="margin-bottom:12px">Data tersimpan di perangkat ini. Download backup secara berkala supaya aman kalau ganti HP atau data browser terhapus.</p>
+    <h2 data-i18n="bk.t">Backup &amp; pulihkan</h2>
+    <p class="tiny" style="margin-bottom:12px" data-i18n="bk.note"></p>
     <div class="save-bar" style="margin:0">
-      <button type="button" class="btn primary" id="btnBackup">Download backup (.json)</button>
-      <label class="btn file-btn" id="restoreLabel">Pulihkan dari backup<input type="file" id="inRestore" accept=".json,application/json" hidden></label>
+      <button type="button" class="btn primary" id="btnBackup" data-i18n="bk.dl">Download backup (.json)</button>
+      <label class="btn file-btn" id="restoreLabel"><span data-i18n="bk.restore">Pulihkan dari backup</span><input type="file" id="inRestore" accept=".json,application/json" hidden></label>
     </div>
   </section>
   <section class="panel">
-    <h2>Hapus semua data</h2>
-    <p class="tiny" style="margin-bottom:12px">Menghapus kalender, claim, slopchest, pengaturan, dan riwayat dari perangkat ini.</p>
-    <button type="button" class="btn ghost danger-text" id="btnWipe">Hapus semua data</button>
+    <h2 data-i18n="wipe.t">Hapus semua data</h2>
+    <p class="tiny" style="margin-bottom:12px" data-i18n="wipe.note"></p>
+    <button type="button" class="btn ghost danger-text" id="btnWipe" data-i18n="wipe.t">Hapus semua data</button>
   </section>
-  <p class="tiny" style="text-align:center">Gaji Rotasi v<span id="appVersion"></span>, data lokal <span id="storageSize"></span></p>
+  <p class="tiny" style="text-align:center" id="verLine"></p>
 </section>
 </main>
 
@@ -547,25 +572,69 @@ body.on-bulan .toast{bottom:calc(var(--tb-h) + var(--sb-h) + 14px + env(safe-are
   </div>
 </div>
 
-<nav class="tabbar" aria-label="Menu">
+<nav class="tabbar" data-i18n-aria="aria.menu" aria-label="Menu">
   <div class="tabbar-in" role="tablist">
-    <button type="button" role="tab" data-tab="bulan" aria-selected="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4.5" width="17" height="16" rx="2.5"/><path d="M3.5 9.5h17M8 2.5v4M16 2.5v4M7.5 13h2M11 13h2M14.5 13h2M7.5 16.5h2M11 16.5h2"/></svg>Bulan</button>
-    <button type="button" role="tab" data-tab="tahun" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M9.3 20V4M14.6 20v-8M20 20V7"/></svg>Tahun</button>
-    <button type="button" role="tab" data-tab="export" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2.5H6.5a2 2 0 0 0-2 2v15a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V8z"/><path d="M14 2.5V8h5.5M12 11.5v6M9.3 15l2.7 2.7 2.7-2.7"/></svg>Export</button>
-    <button type="button" role="tab" data-tab="data" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>Lainnya</button>
+    <button type="button" role="tab" data-tab="bulan" aria-selected="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4.5" width="17" height="16" rx="2.5"/><path d="M3.5 9.5h17M8 2.5v4M16 2.5v4M7.5 13h2M11 13h2M14.5 13h2M7.5 16.5h2M11 16.5h2"/></svg><span data-i18n="tab.bulan">Bulan</span></button>
+    <button type="button" role="tab" data-tab="tahun" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M9.3 20V4M14.6 20v-8M20 20V7"/></svg><span data-i18n="tab.tahun">Tahun</span></button>
+    <button type="button" role="tab" data-tab="export" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2.5H6.5a2 2 0 0 0-2 2v15a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V8z"/><path d="M14 2.5V8h5.5M12 11.5v6M9.3 15l2.7 2.7 2.7-2.7"/></svg><span>Export</span></button>
+    <button type="button" role="tab" data-tab="data" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg><span data-i18n="tab.data">Lainnya</span></button>
   </div>
 </nav>
 
 <div id="modalRoot"></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
-<noscript><p style="padding:16px">Aplikasi ini membutuhkan JavaScript.</p></noscript>
+<noscript><p style="padding:16px">Aplikasi ini membutuhkan JavaScript. / This app needs JavaScript.</p></noscript>
 
 <script>
 /*CORE-START*/
 var Core = (function () {
   'use strict';
-  const MONTHS = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-  const MONTHS_S = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+  // Bahasa: 'id' (default) atau 'en'. Nama bulan, format angka, dan pesan error mengikuti bahasa aktif.
+  const LANGS = {
+    id: {
+      months: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'],
+      monthsS: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
+      group: '.', dec: ',',
+      msg: {
+        required: 'Wajib diisi', badFormat: 'Format angka tidak valid', negative: 'Tidak boleh negatif',
+        annualRequired: 'Annual salary wajib diisi', amountRequired: 'Nominal wajib diisi', gt0: 'Harus lebih dari 0', max: 'Maksimal {v}',
+        daysRange: 'Antara 1 dan 366 hari', rateMax: 'Maksimal {v}%',
+        dateInvalid: 'Tanggal belum lengkap atau tidak valid.', dateOrder: 'Tanggal "Dari" harus sebelum atau sama dengan "Sampai".',
+        typeInvalid: 'Jenis tidak valid.', rangeMax: 'Rentang maksimal {n} hari.', travelRange: 'Jumlah hari travel harus 0–{n}.',
+        travelTooMany: 'Hari travel ({a}) lebih banyak dari panjang rentang ({n} hari).'
+      }
+    },
+    en: {
+      months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+      monthsS: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+      group: ',', dec: '.',
+      msg: {
+        required: 'Required', badFormat: 'Invalid number format', negative: 'Cannot be negative',
+        annualRequired: 'Annual salary is required', amountRequired: 'Amount is required', gt0: 'Must be more than 0', max: 'Maximum {v}',
+        daysRange: 'Between 1 and 366 days', rateMax: 'Maximum {v}%',
+        dateInvalid: 'The date is incomplete or invalid.', dateOrder: '"From" must be on or before "To".',
+        typeInvalid: 'Invalid type.', rangeMax: 'A range can be at most {n} days.', travelRange: 'Travel days must be 0–{n}.',
+        travelTooMany: 'Travel days ({a}) are more than the range length ({n} days).'
+      }
+    }
+  };
+  let LANG = 'id';
+  const MONTHS = LANGS.id.months.slice();
+  const MONTHS_S = LANGS.id.monthsS.slice();
+  function setLang(l) {
+    if (!LANGS[l]) return false;
+    LANG = l;
+    // ganti isi array di tempat supaya referensi Core.MONTHS tetap valid
+    MONTHS.splice.apply(MONTHS, [0, 12].concat(LANGS[l].months));
+    MONTHS_S.splice.apply(MONTHS_S, [0, 12].concat(LANGS[l].monthsS));
+    return true;
+  }
+  function getLang() { return LANG; }
+  function msg(key, p) {
+    let v = LANGS[LANG].msg[key] || LANGS.id.msg[key] || key;
+    if (p) v = v.replace(/\{(\w+)\}/g, function (m, k) { return p[k] != null ? p[k] : m; });
+    return v;
+  }
   const RATES = { ON: 1.3, OFF: 0.7, TRV: 1.0 };
   const EXPECTED_ON = 182.5;
   const LIMITS = {
@@ -573,8 +642,10 @@ var Core = (function () {
     yearMin: 2000, yearMax: 2100, travelMax: 10, daExpectedMin: 1, daExpectedMax: 366, daRateMax: 1000
   };
   // Jenis hari: ON 130%, Travel ON (berangkat) 100%, Travel OFF (pulang) 100%, OFF 70%
-  const BRUSHES = ['ON', 'TON', 'TOFF', 'OFF'];
-  const TYPE_LABEL = { ON: 'ON', TON: 'Travel ON', TOFF: 'Travel OFF', OFF: 'OFF' };
+  // Visa day & Medical day dibayar 100% seperti hari travel
+  const BRUSHES = ['ON', 'TON', 'TOFF', 'VISA', 'MED', 'OFF'];
+  const TYPE_LABEL = { ON: 'ON', TON: 'Travel ON', TOFF: 'Travel OFF', VISA: 'Visa day', MED: 'Medical day', OFF: 'OFF' };
+  const DAY_TYPES = ['ON', 'TON', 'TOFF', 'VISA', 'MED'];
   // Annual Day Account: hari dihitung vs expected; kelebihan × rate% × daily rate, dibayar tahun berikutnya
   const DEFAULT_RULES = { daExpected: 182.5, daRate: 130, daTravel: false, daPayMonth: 1 };
   function isInt(v, min, max) { return typeof v === 'number' && Number.isInteger(v) && v >= min && v <= max; }
@@ -636,13 +707,14 @@ var Core = (function () {
     const f = Math.pow(10, dec);
     const s = (Math.round(v * f + v * f * Number.EPSILON * 8) / f).toFixed(dec);
     const parts = s.split('.');
-    const i = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    const L = LANGS[LANG];
+    const i = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, L.group);
     const isZero = Number(s) === 0;
-    return (neg && !isZero ? '-' : '') + i + (dec > 0 ? ',' + parts[1] : '');
+    return (neg && !isZero ? '-' : '') + i + (dec > 0 ? L.dec + parts[1] : '');
   }
   function fmtMoney(x) { const v = round2(x); return (v < 0 ? '-' : '') + '$' + fmtNum(Math.abs(v), 2); }
   function fmtInput(x) { const v = round2(x); return Number.isInteger(v) ? fmtNum(v, 0) : fmtNum(v, 2); }
-  function fmtPlain(x) { const v = round2(x); return Number.isInteger(v) ? String(v) : v.toFixed(2).replace('.', ','); }
+  function fmtPlain(x) { const v = round2(x); return Number.isInteger(v) ? String(v) : v.toFixed(2).replace('.', LANGS[LANG].dec); }
   function fmtDays(x) {
     const v = round2(x);
     if (Number.isInteger(v)) return fmtNum(v, 0);
@@ -651,12 +723,12 @@ var Core = (function () {
   function fmtSigned(x) { const v = round2(x); return (v > 0 ? '+' : '') + fmtDays(v); }
 
   function parseAmount(raw) {
-    if (raw == null) return { ok: false, empty: true, error: 'Wajib diisi' };
+    if (raw == null) return { ok: false, empty: true, error: msg('required') };
     let s = String(raw).trim();
     s = s.replace(/^usd\s*/i, '').replace(/\s*usd$/i, '').replace(/^\$\s*/, '').replace(/[\s ']/g, '');
-    if (s === '') return { ok: false, empty: true, error: 'Wajib diisi' };
-    const bad = { ok: false, error: 'Format angka tidak valid' };
-    if (s.charAt(0) === '-' || s.charAt(0) === '−') return { ok: false, error: 'Tidak boleh negatif' };
+    if (s === '') return { ok: false, empty: true, error: msg('required') };
+    const bad = { ok: false, error: msg('badFormat') };
+    if (s.charAt(0) === '-' || s.charAt(0) === '−') return { ok: false, error: msg('negative') };
     if (!/^[0-9.,]+$/.test(s)) return bad;
     const lastDot = s.lastIndexOf('.'), lastComma = s.lastIndexOf(',');
     let norm;
@@ -694,33 +766,33 @@ var Core = (function () {
     const r = parseAmount(raw);
     if (r.empty) {
       if (kind === 'ded') return { ok: true, value: 0 };
-      return { ok: false, error: kind === 'annual' ? 'Annual salary wajib diisi' : 'Nominal wajib diisi' };
+      return { ok: false, error: kind === 'annual' ? msg('annualRequired') : msg('amountRequired') };
     }
     if (!r.ok) return r;
     const v = r.value;
     if (kind === 'annual') {
-      if (v <= 0) return { ok: false, error: 'Harus lebih dari 0' };
-      if (v > LIMITS.annualMax) return { ok: false, error: 'Maksimal $' + fmtNum(LIMITS.annualMax, 0) };
+      if (v <= 0) return { ok: false, error: msg('gt0') };
+      if (v > LIMITS.annualMax) return { ok: false, error: msg('max', { v: '$' + fmtNum(LIMITS.annualMax, 0) }) };
     } else if (kind === 'ded') {
-      if (v > LIMITS.dedMax) return { ok: false, error: 'Maksimal $' + fmtNum(LIMITS.dedMax, 0) };
+      if (v > LIMITS.dedMax) return { ok: false, error: msg('max', { v: '$' + fmtNum(LIMITS.dedMax, 0) }) };
     } else {
-      if (v <= 0) return { ok: false, error: 'Harus lebih dari 0' };
-      if (v > LIMITS.claimMax) return { ok: false, error: 'Maksimal $' + fmtNum(LIMITS.claimMax, 0) };
+      if (v <= 0) return { ok: false, error: msg('gt0') };
+      if (v > LIMITS.claimMax) return { ok: false, error: msg('max', { v: '$' + fmtNum(LIMITS.claimMax, 0) }) };
     }
     return { ok: true, value: v };
   }
   function readRule(raw, kind) {
     const r = parseAmount(raw);
-    if (r.empty) return { ok: false, error: 'Wajib diisi' };
+    if (r.empty) return { ok: false, error: msg('required') };
     if (!r.ok) return r;
-    if (kind === 'expected' && (r.value < LIMITS.daExpectedMin || r.value > LIMITS.daExpectedMax)) return { ok: false, error: 'Antara 1 dan 366 hari' };
-    if (kind === 'rate' && r.value > LIMITS.daRateMax) return { ok: false, error: 'Maksimal ' + LIMITS.daRateMax + '%' };
+    if (kind === 'expected' && (r.value < LIMITS.daExpectedMin || r.value > LIMITS.daExpectedMax)) return { ok: false, error: msg('daysRange') };
+    if (kind === 'rate' && r.value > LIMITS.daRateMax) return { ok: false, error: msg('rateMax', { v: fmtNum(LIMITS.daRateMax, 0) }) };
     return { ok: true, value: r.value };
   }
 
   // ---------- state ----------
   function defaultRules() { return { daExpected: DEFAULT_RULES.daExpected, daRate: DEFAULT_RULES.daRate, daTravel: DEFAULT_RULES.daTravel, daPayMonth: DEFAULT_RULES.daPayMonth }; }
-  function emptyState() { return { version: 2, months: {}, days: {}, claims: {}, slop: {}, history: {}, settings: defaultRules(), ui: { period: null, brush: 'ON', rangeTon: 0, rangeToff: 0 } }; }
+  function emptyState() { return { version: 2, months: {}, days: {}, claims: {}, slop: {}, history: {}, settings: defaultRules(), ui: { period: null, brush: 'ON', rangeTon: 0, rangeToff: 0, lang: null } }; }
   function newId() { return 'c' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
   function isObj(o) { return o !== null && typeof o === 'object' && !Array.isArray(o); }
   function numOk(v, min, max) { return typeof v === 'number' && isFinite(v) && v >= min && v <= max; }
@@ -740,9 +812,10 @@ var Core = (function () {
   }
   function cleanDa(d) {
     if (!isObj(d)) return null;
-    if (!isInt(d.year, LIMITS.yearMin, LIMITS.yearMax) || !isInt(d.on, 0, 366) || !isInt(d.ton, 0, 366) || !isInt(d.toff, 0, 366) || d.on + d.ton + d.toff > 366) return null;
+    const visa = d.visa == null ? 0 : d.visa, med = d.med == null ? 0 : d.med;
+    if (!isInt(d.year, LIMITS.yearMin, LIMITS.yearMax) || !isInt(d.on, 0, 366) || !isInt(d.ton, 0, 366) || !isInt(d.toff, 0, 366) || !isInt(visa, 0, 366) || !isInt(med, 0, 366) || d.on + d.ton + d.toff + visa + med > 366) return null;
     if (!numOk(d.expected, LIMITS.daExpectedMin, LIMITS.daExpectedMax) || !numOk(d.rate, 0, LIMITS.daRateMax) || typeof d.travel !== 'boolean' || !numOk(d.annual, 0, LIMITS.annualMax)) return null;
-    return { year: d.year, on: d.on, ton: d.ton, toff: d.toff, expected: round2(d.expected), rate: round2(d.rate), travel: d.travel, annual: round2(d.annual) };
+    return { year: d.year, on: d.on, ton: d.ton, toff: d.toff, visa: visa, med: med, expected: round2(d.expected), rate: round2(d.rate), travel: d.travel, annual: round2(d.annual) };
   }
   function cleanItems(arr, counter, defDesc) {
     const out = [];
@@ -780,7 +853,7 @@ var Core = (function () {
     if (isObj(raw.days)) for (const k of Object.keys(raw.days)) {
       let v = raw.days[k];
       if (v === 'TRV') v = 'TON'; // data versi lama: satu jenis "Travel"
-      if (parseDate(k) && (v === 'ON' || v === 'TON' || v === 'TOFF')) st.days[k] = v; else counter.n++;
+      if (parseDate(k) && DAY_TYPES.indexOf(v) >= 0) st.days[k] = v; else counter.n++;
     }
     [['claims', 'Claim expenses'], ['slop', 'Slopchest']].forEach(function (pair) {
       const src = raw[pair[0]];
@@ -802,6 +875,10 @@ var Core = (function () {
       const ton = cleanDateList(h.ton !== undefined ? h.ton : h.trv, k, counter).filter(function (d) { return !used.has(d); });
       ton.forEach(function (d) { used.add(d); });
       const toff = cleanDateList(h.toff, k, counter).filter(function (d) { return !used.has(d); });
+      toff.forEach(function (d) { used.add(d); });
+      const visa = cleanDateList(h.visa, k, counter).filter(function (d) { return !used.has(d); });
+      visa.forEach(function (d) { used.add(d); });
+      const med = cleanDateList(h.med, k, counter).filter(function (d) { return !used.has(d); });
       let da = null;
       if (h.da != null) {
         da = cleanDa(h.da);
@@ -813,7 +890,7 @@ var Core = (function () {
         period: k,
         savedAt: (typeof h.savedAt === 'string' && !isNaN(Date.parse(h.savedAt))) ? h.savedAt : new Date(0).toISOString(),
         annual: cfg.annual, insurance: cfg.insurance, pension: cfg.pension,
-        on: on, ton: ton, toff: toff, claims: cleanItems(h.claims, counter, 'Claim expenses'), slop: cleanItems(h.slop, counter, 'Slopchest'), da: da
+        on: on, ton: ton, toff: toff, visa: visa, med: med, claims: cleanItems(h.claims, counter, 'Claim expenses'), slop: cleanItems(h.slop, counter, 'Slopchest'), da: da
       };
     }
     if (isObj(raw.ui)) {
@@ -822,6 +899,7 @@ var Core = (function () {
       if (BRUSHES.indexOf(b) >= 0) st.ui.brush = b;
       if (isInt(raw.ui.rangeTon, 0, LIMITS.travelMax)) st.ui.rangeTon = raw.ui.rangeTon;
       if (isInt(raw.ui.rangeToff, 0, LIMITS.travelMax)) st.ui.rangeToff = raw.ui.rangeToff;
+      if (raw.ui.lang === 'id' || raw.ui.lang === 'en') st.ui.lang = raw.ui.lang;
     }
     return { state: st, dropped: counter.n };
   }
@@ -840,24 +918,25 @@ var Core = (function () {
   }
   function daysOf(dayMap, period) {
     const q = parsePeriod(period);
-    const on = [], ton = [], toff = [];
+    const on = [], ton = [], toff = [], visa = [], med = [];
     const n = daysInMonth(q.y, q.m);
     for (let d = 1; d <= n; d++) {
       const k = ymd(q.y, q.m, d);
       const v = dayMap[k];
       if (v === 'ON') on.push(k); else if (v === 'TON') ton.push(k); else if (v === 'TOFF') toff.push(k);
+      else if (v === 'VISA') visa.push(k); else if (v === 'MED') med.push(k);
     }
-    return { on: on, ton: ton, toff: toff };
+    return { on: on, ton: ton, toff: toff, visa: visa, med: med };
   }
   function yearCount(dayMap, y) {
     const pre = y + '-';
-    let on = 0, ton = 0, toff = 0;
+    let on = 0, ton = 0, toff = 0, visa = 0, med = 0;
     for (const k of Object.keys(dayMap)) {
       if (k.slice(0, 5) !== pre) continue;
       const v = dayMap[k];
-      if (v === 'ON') on++; else if (v === 'TON') ton++; else if (v === 'TOFF') toff++;
+      if (v === 'ON') on++; else if (v === 'TON') ton++; else if (v === 'TOFF') toff++; else if (v === 'VISA') visa++; else if (v === 'MED') med++;
     }
-    return { on: on, ton: ton, toff: toff, trv: ton + toff };
+    return { on: on, ton: ton, toff: toff, visa: visa, med: med, trv: ton + toff };
   }
 
   // ---------- Annual Day Account ----------
@@ -878,13 +957,15 @@ var Core = (function () {
     return parsePeriod(p) ? p : null;
   }
   function dayAccount(d) {
-    const counted = d.on + (d.travel ? d.ton + d.toff : 0);
+    const visa = d.visa || 0, med = d.med || 0;
+    // "travel" = hari 100% (Travel ON/OFF, Visa, Medical) ikut dihitung sebagai hari kerja
+    const counted = d.on + (d.travel ? d.ton + d.toff + visa + med : 0);
     const diff = round2(counted - d.expected);
     const excess = diff > 0 ? diff : 0;
     const dr = d.annual / 365;
     const amount = round2(excess * (d.rate / 100) * dr);
     return {
-      year: d.year, on: d.on, ton: d.ton, toff: d.toff, trv: d.ton + d.toff, counted: counted, expected: d.expected,
+      year: d.year, on: d.on, ton: d.ton, toff: d.toff, visa: visa, med: med, trv: d.ton + d.toff, counted: counted, expected: d.expected,
       diff: diff, excess: excess, short: diff < 0 ? -diff : 0, rate: d.rate, travel: d.travel, annual: d.annual, dr: dr, amount: amount
     };
   }
@@ -892,7 +973,7 @@ var Core = (function () {
   function daInputFor(state, y) {
     const r = rulesOf(state);
     const c = yearCount(state.days, y);
-    return { year: y, on: c.on, ton: c.ton, toff: c.toff, expected: r.daExpected, rate: r.daRate, travel: r.daTravel, annual: cfgFor(state, pkey(y, 12)).annual };
+    return { year: y, on: c.on, ton: c.ton, toff: c.toff, visa: c.visa, med: c.med, expected: r.daExpected, rate: r.daRate, travel: r.daTravel, annual: cfgFor(state, pkey(y, 12)).annual };
   }
   function liveDa(state, period) {
     const y = daYearForPeriod(period, rulesOf(state).daPayMonth);
@@ -910,15 +991,16 @@ var Core = (function () {
     const cfg = cfgFor(state, period);
     const d = daysOf(state.days, period);
     return {
-      period: period, annual: cfg.annual, insurance: cfg.insurance, pension: cfg.pension, on: d.on, ton: d.ton, toff: d.toff,
+      period: period, annual: cfg.annual, insurance: cfg.insurance, pension: cfg.pension, on: d.on, ton: d.ton, toff: d.toff, visa: d.visa, med: d.med,
       claims: copyItems(state.claims[period]), slop: copyItems((state.slop || {})[period]), da: liveDa(state, period)
     };
   }
   function calc(inp) {
     const q = parsePeriod(inp.period);
     const days = daysInMonth(q.y, q.m);
-    const onDates = inp.on || [], tonDates = inp.ton || [], toffDates = inp.toff || [];
-    const on = onDates.length, ton = tonDates.length, toff = toffDates.length, trv = ton + toff, off = days - on - trv;
+    const onDates = inp.on || [], tonDates = inp.ton || [], toffDates = inp.toff || [], visaDates = inp.visa || [], medDates = inp.med || [];
+    const on = onDates.length, ton = tonDates.length, toff = toffDates.length, visa = visaDates.length, med = medDates.length;
+    const trv = ton + toff, p100 = trv + visa + med, off = days - on - p100;
     const annual = inp.annual;
     const dr = annual / 365;
     const onAdd = (RATES.ON - RATES.OFF) * dr;
@@ -928,9 +1010,11 @@ var Core = (function () {
     const tonPay = round2(ton * trvAdd);
     const toffPay = round2(toff * trvAdd);
     const trvPay = round2(tonPay + toffPay);
+    const visaPay = round2(visa * trvAdd);
+    const medPay = round2(med * trvAdd);
     const da = inp.da ? dayAccount(inp.da) : null;
     const daPay = da ? da.amount : 0;
-    const gross = round2(guarantee + onPay + tonPay + toffPay + daPay);
+    const gross = round2(guarantee + onPay + tonPay + toffPay + visaPay + medPay + daPay);
     const insurance = round2(inp.insurance || 0), pension = round2(inp.pension || 0);
     const claims = copyItems(inp.claims);
     const slop = copyItems(inp.slop);
@@ -940,17 +1024,18 @@ var Core = (function () {
     const allDeductions = round2(deductions + slopTotal);
     const net = round2(gross - allDeductions + claimsTotal);
     return {
-      period: inp.period, payPeriod: addMonths(inp.period, 1), days: days, on: on, ton: ton, toff: toff, trv: trv, off: off,
-      onDates: onDates.slice(), tonDates: tonDates.slice(), toffDates: toffDates.slice(), annual: annual, dr: dr, onAdd: onAdd, trvAdd: trvAdd,
-      guarantee: guarantee, onPay: onPay, tonPay: tonPay, toffPay: toffPay, trvPay: trvPay, da: da, daPay: daPay, gross: gross,
+      period: inp.period, payPeriod: addMonths(inp.period, 1), days: days, on: on, ton: ton, toff: toff, visa: visa, med: med, trv: trv, p100: p100, off: off,
+      onDates: onDates.slice(), tonDates: tonDates.slice(), toffDates: toffDates.slice(), visaDates: visaDates.slice(), medDates: medDates.slice(),
+      annual: annual, dr: dr, onAdd: onAdd, trvAdd: trvAdd,
+      guarantee: guarantee, onPay: onPay, tonPay: tonPay, toffPay: toffPay, trvPay: trvPay, visaPay: visaPay, medPay: medPay, da: da, daPay: daPay, gross: gross,
       insurance: insurance, pension: pension, deductions: deductions, slop: slop, slopTotal: slopTotal, allDeductions: allDeductions,
       claims: claims, claimsTotal: claimsTotal, net: net
     };
   }
   function itemsSig(a) { return (a || []).map(function (c) { return [c.desc, round2(c.amount)]; }); }
-  function daSig(d) { return d ? [d.year, d.on, d.ton, d.toff, round2(d.expected), round2(d.rate), !!d.travel, round2(d.annual)] : null; }
+  function daSig(d) { return d ? [d.year, d.on, d.ton, d.toff, d.visa || 0, d.med || 0, round2(d.expected), round2(d.rate), !!d.travel, round2(d.annual)] : null; }
   function baseSignature(inp) {
-    return JSON.stringify([round2(inp.annual), round2(inp.insurance), round2(inp.pension), inp.on || [], inp.ton || [], inp.toff || [], itemsSig(inp.claims), itemsSig(inp.slop)]);
+    return JSON.stringify([round2(inp.annual), round2(inp.insurance), round2(inp.pension), inp.on || [], inp.ton || [], inp.toff || [], inp.visa || [], inp.med || [], itemsSig(inp.claims), itemsSig(inp.slop)]);
   }
   function signature(inp) { return JSON.stringify([baseSignature(inp), daSig(inp.da)]); }
   function statusInfo(state, period) {
@@ -964,9 +1049,9 @@ var Core = (function () {
   function makeSnapshot(inp, savedAt) {
     return {
       period: inp.period, savedAt: savedAt, annual: round2(inp.annual), insurance: round2(inp.insurance), pension: round2(inp.pension),
-      on: (inp.on || []).slice(), ton: (inp.ton || []).slice(), toff: (inp.toff || []).slice(),
+      on: (inp.on || []).slice(), ton: (inp.ton || []).slice(), toff: (inp.toff || []).slice(), visa: (inp.visa || []).slice(), med: (inp.med || []).slice(),
       claims: copyItems(inp.claims), slop: copyItems(inp.slop),
-      da: inp.da ? { year: inp.da.year, on: inp.da.on, ton: inp.da.ton, toff: inp.da.toff, expected: inp.da.expected, rate: inp.da.rate, travel: inp.da.travel, annual: inp.da.annual } : null
+      da: inp.da ? { year: inp.da.year, on: inp.da.on, ton: inp.da.ton, toff: inp.da.toff, visa: inp.da.visa || 0, med: inp.da.med || 0, expected: inp.da.expected, rate: inp.da.rate, travel: inp.da.travel, annual: inp.da.annual } : null
     };
   }
   function clearPeriod(dayMap, period) {
@@ -983,6 +1068,8 @@ var Core = (function () {
     h.on.forEach(function (d) { state.days[d] = 'ON'; });
     h.ton.forEach(function (d) { state.days[d] = 'TON'; });
     h.toff.forEach(function (d) { state.days[d] = 'TOFF'; });
+    (h.visa || []).forEach(function (d) { state.days[d] = 'VISA'; });
+    (h.med || []).forEach(function (d) { state.days[d] = 'MED'; });
     state.months[period] = { annual: h.annual, insurance: h.insurance, pension: h.pension };
     if (h.claims.length) state.claims[period] = copyItems(h.claims); else delete state.claims[period];
     if (!state.slop) state.slop = {};
@@ -990,22 +1077,24 @@ var Core = (function () {
     return true;
   }
   function rangeInfo(from, to, type, opt) {
-    if (!parseDate(from) || !parseDate(to)) return { ok: false, error: 'Tanggal belum lengkap atau tidak valid.' };
-    if (from > to) return { ok: false, error: 'Tanggal "Dari" harus sebelum atau sama dengan "Sampai".' };
-    if (BRUSHES.indexOf(type) < 0) return { ok: false, error: 'Jenis tidak valid.' };
+    if (!parseDate(from) || !parseDate(to)) return { ok: false, error: msg('dateInvalid') };
+    if (from > to) return { ok: false, error: msg('dateOrder') };
+    if (BRUSHES.indexOf(type) < 0) return { ok: false, error: msg('typeInvalid') };
     const n = diffDays(from, to) + 1;
-    if (n > LIMITS.rangeMaxDays) return { ok: false, error: 'Rentang maksimal ' + LIMITS.rangeMaxDays + ' hari.' };
-    let on = 0, ton = 0, toff = 0, off = 0;
+    if (n > LIMITS.rangeMaxDays) return { ok: false, error: msg('rangeMax', { n: LIMITS.rangeMaxDays }) };
+    let on = 0, ton = 0, toff = 0, visa = 0, med = 0, off = 0;
     if (type === 'ON') {
       const a = (opt && opt.tonDays != null) ? opt.tonDays : 0;
       const b = (opt && opt.toffDays != null) ? opt.toffDays : 0;
-      if (!isInt(a, 0, LIMITS.travelMax) || !isInt(b, 0, LIMITS.travelMax)) return { ok: false, error: 'Jumlah hari travel harus 0–' + LIMITS.travelMax + '.' };
-      if (a + b > n) return { ok: false, error: 'Hari travel (' + (a + b) + ') lebih banyak dari panjang rentang (' + n + ' hari).' };
+      if (!isInt(a, 0, LIMITS.travelMax) || !isInt(b, 0, LIMITS.travelMax)) return { ok: false, error: msg('travelRange', { n: LIMITS.travelMax }) };
+      if (a + b > n) return { ok: false, error: msg('travelTooMany', { a: a + b, n: n }) };
       ton = a; toff = b; on = n - a - b;
     } else if (type === 'TON') ton = n;
     else if (type === 'TOFF') toff = n;
+    else if (type === 'VISA') visa = n;
+    else if (type === 'MED') med = n;
     else off = n;
-    return { ok: true, n: n, on: on, ton: ton, toff: toff, off: off, periods: periodsBetween(from.slice(0, 7), to.slice(0, 7)) };
+    return { ok: true, n: n, on: on, ton: ton, toff: toff, visa: visa, med: med, off: off, periods: periodsBetween(from.slice(0, 7), to.slice(0, 7)) };
   }
   // Rentang ON: N hari pertama = Travel ON, M hari terakhir = Travel OFF, sisanya ON
   function applyRange(dayMap, from, to, type, opt) {
@@ -1055,9 +1144,9 @@ var Core = (function () {
     return Array.from(ys).sort(function (a, b) { return b - a; });
   }
   function totals(results) {
-    const t = { count: results.length, on: 0, ton: 0, toff: 0, trv: 0, off: 0, gross: 0, insurance: 0, pension: 0, deductions: 0, slop: 0, allDeductions: 0, claims: 0, daPay: 0, net: 0 };
+    const t = { count: results.length, on: 0, ton: 0, toff: 0, visa: 0, med: 0, trv: 0, off: 0, gross: 0, insurance: 0, pension: 0, deductions: 0, slop: 0, allDeductions: 0, claims: 0, daPay: 0, net: 0 };
     for (const r of results) {
-      t.on += r.on; t.ton += r.ton; t.toff += r.toff; t.trv += r.trv; t.off += r.off;
+      t.on += r.on; t.ton += r.ton; t.toff += r.toff; t.visa += r.visa; t.med += r.med; t.trv += r.trv; t.off += r.off;
       t.gross += r.gross; t.insurance += r.insurance; t.pension += r.pension; t.deductions += r.deductions; t.slop += r.slopTotal;
       t.allDeductions += r.allDeductions; t.claims += r.claimsTotal; t.daPay += r.daPay; t.net += r.net;
     }
@@ -1075,7 +1164,7 @@ var Core = (function () {
 
   return {
     MONTHS: MONTHS, MONTHS_S: MONTHS_S, RATES: RATES, EXPECTED_ON: EXPECTED_ON, LIMITS: LIMITS, BRUSHES: BRUSHES, TYPE_LABEL: TYPE_LABEL,
-    DEFAULT_RULES: DEFAULT_RULES, isInt: isInt,
+    DEFAULT_RULES: DEFAULT_RULES, isInt: isInt, setLang: setLang, getLang: getLang,
     pad2: pad2, ymd: ymd, pkey: pkey, daysInMonth: daysInMonth, parsePeriod: parsePeriod, parseDate: parseDate,
     addMonths: addMonths, periodsBetween: periodsBetween, addDays: addDays, diffDays: diffDays, weekdayMon0: weekdayMon0,
     periodLabel: periodLabel, periodShort: periodShort, dateLabel: dateLabel,
@@ -1265,8 +1354,86 @@ var PdfKit = (function () {
 var Report = (function () {
   'use strict';
   const C = Core;
-  const NAVY = '#10283a', MUTED = '#5d7180', INK = '#14232d', ORANGE = '#c8510e', YELLOW = '#e9ab17', BLUE = '#2f66c9', GREY = '#8aa0ad', RED = '#b8382a', GREEN = '#1d7f4e';
+  const NAVY = '#10283a', MUTED = '#5d7180', INK = '#14232d', ORANGE = '#c8510e', YELLOW = '#e9ab17', BLUE = '#2f66c9', TEAL = '#0f8b7d', MAGENTA = '#b0307f', GREY = '#8aa0ad', RED = '#b8382a', GREEN = '#1d7f4e';
   const TOTAL_FILL = '#e6edf2', DA_FILL = '#dcf1e5';
+  function dw(n) { return n === 1 ? 'day' : 'days'; }
+  const T = {
+    id: {
+      titleFull: 'Rekap Gaji Rotasi', titleDates: 'Rekap Hari ON / OFF',
+      work: 'Periode kerja: ', paid: 'Dibayar: ',
+      savedOf: function (n, m) { return n + ' dari ' + m + ' bulan dalam rentang tersimpan di riwayat'; },
+      sGross: 'Total kotor', sDed: 'Asuransi + pension', sSlop: 'Slopchest', sClaim: 'Claim expenses', sNet: 'Total diterima',
+      sOn: 'Hari ON',
+      secYear: 'Per tahun', secDa: 'Annual Day Account', secMonth: 'Per bulan', secDetail: 'Rincian per bulan', secRot: 'Daftar rotasi (hari ON/Travel berurutan)',
+      year: 'Tahun', months: 'Bulan', monthsRec: 'Bulan tercatat', totalGross: 'Total kotor', totalNet: 'Total diterima', expectedYear: 'Expected / tahun',
+      counted: 'Hari dihitung', diff: 'Selisih', extra: 'Tambahan', status: 'Status',
+      stSlip: function (p) { return 'Slip ' + p; }, stFull: 'Dari 12 bulan', stProv: 'Sementara',
+      workPeriod: 'Periode kerja', paidCol: 'Dibayar', gross: 'Kotor', dedSlop: 'Potongan + slopchest', claim: 'Claim', net: 'Diterima', total: 'Total',
+      period: 'Periode', onDates: 'Tanggal ON', tonDates: 'Tanggal Travel ON', toffDates: 'Tanggal Travel OFF', vmDates: 'Tanggal Visa / Medical',
+      lVisa: 'Tambahan Visa day', lMed: 'Tambahan Medical day',
+      paidOn: function (p) { return 'dibayar ' + p; },
+      datesLine: function (a, b, c) { return 'Tanggal ON: ' + a + '     Travel ON: ' + b + '     Travel OFF: ' + c; },
+      comp: 'Komponen', calc: 'Perhitungan', amount: 'Jumlah',
+      lOn: 'Tambahan ON', lTon: 'Tambahan Travel ON', lToff: 'Tambahan Travel OFF',
+      nDays: function (n, r) { return n + ' hari × ' + r; },
+      daOver: function (x, rate, dr) { return 'lebih ' + x + ' hari × ' + rate + '% × ' + dr; },
+      daNone: function (c, e) { return 'tidak ada kelebihan (' + c + ' dari ' + e + ' hari)'; },
+      lGross: 'Gaji kotor', lIns: 'Asuransi', lPen: 'Pension plan', lNet: 'Diterima',
+      no: 'No', start: 'Mulai', end: 'Selesai', days: 'Jumlah hari',
+      noRot: 'Tidak ada hari ON atau Travel pada data tersimpan.',
+      more: function (n) { return ' dan ' + n + ' lainnya'; },
+      nMissing: function (l) { return 'Bulan dalam rentang yang belum disimpan di riwayat: ' + l + '.'; },
+      nCut: 'Blok rotasi di awal atau akhir rentang bisa terpotong oleh batas rentang atau bulan yang belum disimpan.',
+      nDa: function (travel, exp, full, rate, payMonth) {
+        return 'Annual Day Account: hari dihitung = ON' + (travel ? ' + Travel ON/OFF + Visa day + Medical day' : '') + ', dibanding expected ' + exp + ' hari per tahun. ' +
+          (full ? 'Kelebihan hari × ' + rate + '% × daily rate (annual bulan terakhir tahun itu ÷ 365), dibayar bersama gaji ' + payMonth + ' tahun berikutnya. ' : '') +
+          'Kalau slip pembayaran Day Account ada di rentang, angkanya sama dengan slip itu (seluruh hari yang ditandai di tahun tersebut). Kalau tidak, dihitung dari bulan tersimpan dalam rentang dan ditandai Sementara bila belum 12 bulan.';
+      },
+      nFormula: 'Rumus: daily rate = annual ÷ 365; guarantee = 70% × annual ÷ 12 per bulan; tambahan ON = 60% × daily rate per hari; tambahan Travel ON / Travel OFF / Visa day / Medical day = 30% × daily rate per hari. Hari dihitung tanggal 1 sampai akhir bulan dan dibayarkan bulan berikutnya. Diterima = gaji kotor - asuransi - pension - slopchest + claim.',
+      nNotOfficial: 'Dokumen ini dibuat dari data riwayat aplikasi Gaji Rotasi, bukan slip gaji resmi perusahaan.',
+      created: function (d) { return 'Gaji Rotasi · dibuat ' + d; },
+      page: function (i, n) { return 'Halaman ' + i + ' / ' + n; },
+      fileFull: 'Rekap-Gaji', fileDates: 'Rekap-ON-OFF', fileTo: '_sd_'
+    },
+    en: {
+      titleFull: 'Rotation Pay Summary', titleDates: 'ON / OFF Days Summary',
+      work: 'Work period: ', paid: 'Paid: ',
+      savedOf: function (n, m) { return n + ' of ' + m + ' months in the range saved in history'; },
+      sGross: 'Total gross', sDed: 'Insurance + pension', sSlop: 'Slopchest', sClaim: 'Claim expenses', sNet: 'Total net pay',
+      sOn: 'ON days',
+      secYear: 'By year', secDa: 'Annual Day Account', secMonth: 'By month', secDetail: 'Monthly details', secRot: 'Rotations (consecutive ON/Travel days)',
+      year: 'Year', months: 'Months', monthsRec: 'Months recorded', totalGross: 'Total gross', totalNet: 'Total net pay', expectedYear: 'Expected / year',
+      counted: 'Days counted', diff: 'Difference', extra: 'Extra pay', status: 'Status',
+      stSlip: function (p) { return 'Slip ' + p; }, stFull: 'From 12 months', stProv: 'Provisional',
+      workPeriod: 'Work period', paidCol: 'Paid', gross: 'Gross', dedSlop: 'Deductions + slopchest', claim: 'Claims', net: 'Net', total: 'Total',
+      period: 'Period', onDates: 'ON dates', tonDates: 'Travel ON dates', toffDates: 'Travel OFF dates', vmDates: 'Visa / Medical dates',
+      lVisa: 'Visa day top-up', lMed: 'Medical day top-up',
+      paidOn: function (p) { return 'paid ' + p; },
+      datesLine: function (a, b, c) { return 'ON dates: ' + a + '     Travel ON: ' + b + '     Travel OFF: ' + c; },
+      comp: 'Component', calc: 'Calculation', amount: 'Amount',
+      lOn: 'ON top-up', lTon: 'Travel ON top-up', lToff: 'Travel OFF top-up',
+      nDays: function (n, r) { return n + ' ' + dw(n) + ' × ' + r; },
+      daOver: function (x, rate, dr, n) { return x + ' extra ' + dw(n) + ' × ' + rate + '% × ' + dr; },
+      daNone: function (c, e) { return 'no extra days (' + c + ' of ' + e + ' days)'; },
+      lGross: 'Gross pay', lIns: 'Insurance', lPen: 'Pension plan', lNet: 'Net pay',
+      no: 'No', start: 'Start', end: 'End', days: 'Days',
+      noRot: 'No ON or Travel days in the saved data.',
+      more: function (n) { return ' and ' + n + ' more'; },
+      nMissing: function (l) { return 'Months in the range not saved in history: ' + l + '.'; },
+      nCut: 'Rotations at the start or end of the range may be cut off by the range limits or by months that are not saved.',
+      nDa: function (travel, exp, full, rate, payMonth) {
+        return 'Annual Day Account: days counted = ON' + (travel ? ' + Travel ON/OFF + Visa day + Medical day' : '') + ', against an expected ' + exp + ' days per year. ' +
+          (full ? 'Extra days × ' + rate + '% × daily rate (annual of the last month of that year ÷ 365), paid with the ' + payMonth + ' salary of the following year. ' : '') +
+          'If the slip that pays the Day Account is in the range, the figures match that slip (all days marked in that year). Otherwise they are counted from the saved months in the range and marked Provisional when fewer than 12 months are saved.';
+      },
+      nFormula: 'Formula: daily rate = annual ÷ 365; guarantee = 70% × annual ÷ 12 per month; ON top-up = 60% × daily rate per day; Travel ON / Travel OFF / Visa day / Medical day top-up = 30% × daily rate per day. Days count from the 1st to the last day of the month and are paid the following month. Net pay = gross pay - insurance - pension - slopchest + claims.',
+      nNotOfficial: 'This document is generated from the Gaji Rotasi app history. It is not an official company payslip.',
+      created: function (d) { return 'Gaji Rotasi · created ' + d; },
+      page: function (i, n) { return 'Page ' + i + ' / ' + n; },
+      fileFull: 'Pay-Summary', fileDates: 'ON-OFF-Summary', fileTo: '_to_'
+    }
+  };
+  function L() { return T[C.getLang()] || T.id; }
   function p2(n) { return n < 10 ? '0' + n : String(n); }
   function pdfDate(d) { return d.getFullYear() + p2(d.getMonth() + 1) + p2(d.getDate()) + p2(d.getHours()) + p2(d.getMinutes()) + p2(d.getSeconds()); }
   function human(d) { return p2(d.getDate()) + ' ' + C.MONTHS_S[d.getMonth()] + ' ' + d.getFullYear() + ' ' + p2(d.getHours()) + ':' + p2(d.getMinutes()); }
@@ -1276,66 +1443,72 @@ var Report = (function () {
   function minus(v) { return v > 0 ? '-' + money(v) : money(0); }
   function listPeriods(ps, max) {
     const shown = ps.slice(0, max).map(C.periodShort);
-    return shown.join(', ') + (ps.length > max ? ' dan ' + (ps.length - max) + ' lainnya' : '');
+    return shown.join(', ') + (ps.length > max ? L().more(ps.length - max) : '');
   }
-  function fileName(mode, from, to) { return (mode === 'full' ? 'Rekap-Gaji' : 'Rekap-ON-OFF') + '_' + from + (from === to ? '' : '_sd_' + to) + '.pdf'; }
+  function fileName(mode, from, to) { const t = L(); return (mode === 'full' ? t.fileFull : t.fileDates) + '_' + from + (from === to ? '' : t.fileTo + to) + '.pdf'; }
   function daLine(da) {
-    return da.excess > 0
-      ? 'lebih ' + C.fmtDays(da.excess) + ' hari × ' + C.fmtDays(da.rate) + '% × ' + rate(da.dr)
-      : 'tidak ada kelebihan (' + C.fmtDays(da.counted) + ' dari ' + C.fmtDays(da.expected) + ' hari)';
+    const t = L();
+    return da.excess > 0 ? t.daOver(C.fmtDays(da.excess), C.fmtDays(da.rate), rate(da.dr), da.excess) : t.daNone(C.fmtDays(da.counted), C.fmtDays(da.expected));
   }
 
-  function header(L, title, lines) {
-    L.doc.rect(0, 0, L.W, 84, NAVY);
-    L.doc.rect(0, 84, L.W, 3, ORANGE);
-    L.doc.text(L.m, 34, title, { size: 17, bold: true, color: '#ffffff' });
-    L.doc.text(L.m, 53, lines[0], { size: 9.5, color: '#cfdde6' });
-    if (lines[1]) L.doc.text(L.m, 68, lines[1], { size: 9.5, color: '#cfdde6' });
-    L.y = 104;
+  function vmText(r) {
+    const parts = [];
+    if (r.visa) parts.push('Visa ' + C.dayRanges(r.visaDates));
+    if (r.med) parts.push('Medical ' + C.dayRanges(r.medDates));
+    return parts.length ? parts.join('; ') : '-';
   }
-  function stats(L, items) {
-    const gap = 8, n = items.length, w = (L.cw - gap * (n - 1)) / n, h = 46;
-    L.ensure(h + 10);
+  function header(Lo, title, lines) {
+    Lo.doc.rect(0, 0, Lo.W, 84, NAVY);
+    Lo.doc.rect(0, 84, Lo.W, 3, ORANGE);
+    Lo.doc.text(Lo.m, 34, title, { size: 17, bold: true, color: '#ffffff' });
+    Lo.doc.text(Lo.m, 53, lines[0], { size: 9.5, color: '#cfdde6' });
+    if (lines[1]) Lo.doc.text(Lo.m, 68, lines[1], { size: 9.5, color: '#cfdde6' });
+    Lo.y = 104;
+  }
+  function stats(Lo, items) {
+    const gap = 8, n = items.length, w = (Lo.cw - gap * (n - 1)) / n, h = 46;
+    Lo.ensure(h + 10);
     items.forEach(function (it, i) {
-      const x = L.m + i * (w + gap);
-      L.doc.rect(x, L.y, w, h, '#eef3f6');
-      L.doc.rect(x, L.y, 3, h, it[2] || NAVY);
-      L.doc.text(x + 10, L.y + 16, it[0], { size: 8, color: MUTED });
+      const x = Lo.m + i * (w + gap);
+      Lo.doc.rect(x, Lo.y, w, h, '#eef3f6');
+      Lo.doc.rect(x, Lo.y, 3, h, it[2] || NAVY);
+      Lo.doc.text(x + 10, Lo.y + 16, it[0], { size: 8, color: MUTED });
       let size = 12.5;
       while (size > 7 && PdfKit.width(it[1], size, true) > w - 16) size -= 0.5;
-      L.doc.text(x + 10, L.y + 35, it[1], { size: size, bold: true, color: INK });
+      Lo.doc.text(x + 10, Lo.y + 35, it[1], { size: size, bold: true, color: INK });
     });
-    L.y += h + 10;
+    Lo.y += h + 10;
   }
-  function section(L, title, need) {
-    L.ensure(need || 70);
-    L.y += 10;
-    L.doc.text(L.m, L.y + 12, title, { size: 11.5, bold: true, color: NAVY });
-    L.y += 18;
-    L.doc.line(L.m, L.y, L.m + L.cw, L.y, NAVY, 0.8);
-    L.y += 6;
+  function section(Lo, title, need) {
+    Lo.ensure(need || 70);
+    Lo.y += 10;
+    Lo.doc.text(Lo.m, Lo.y + 12, title, { size: 11.5, bold: true, color: NAVY });
+    Lo.y += 18;
+    Lo.doc.line(Lo.m, Lo.y, Lo.m + Lo.cw, Lo.y, NAVY, 0.8);
+    Lo.y += 6;
   }
   function perYear(results) {
     const m = new Map();
     for (const r of results) {
       const y = r.period.slice(0, 4);
-      if (!m.has(y)) m.set(y, { y: y, months: 0, on: 0, ton: 0, toff: 0, gross: 0, net: 0 });
+      if (!m.has(y)) m.set(y, { y: y, months: 0, on: 0, ton: 0, toff: 0, visa: 0, med: 0, gross: 0, net: 0 });
       const o = m.get(y);
-      o.months++; o.on += r.on; o.ton += r.ton; o.toff += r.toff; o.gross += r.gross; o.net += r.net;
+      o.months++; o.on += r.on; o.ton += r.ton; o.toff += r.toff; o.visa += r.visa; o.med += r.med; o.gross += r.gross; o.net += r.net;
     }
     return Array.from(m.values());
   }
   // Day Account per tahun: pakai angka di slip pembayarannya kalau slip itu ada di rentang,
   // kalau tidak, hitung sementara dari bulan tersimpan dalam rentang
   function yearDa(list, rules) {
+    const t = L();
     const m = new Map();
     function get(y) {
-      if (!m.has(y)) m.set(y, { year: y, months: 0, on: 0, ton: 0, toff: 0, annual: 0, from: '', slip: null });
+      if (!m.has(y)) m.set(y, { year: y, months: 0, on: 0, ton: 0, toff: 0, visa: 0, med: 0, annual: 0, from: '', slip: null });
       return m.get(y);
     }
     for (const s of list) {
       const o = get(+s.period.slice(0, 4));
-      o.months++; o.on += s.on.length; o.ton += s.ton.length; o.toff += s.toff.length;
+      o.months++; o.on += s.on.length; o.ton += s.ton.length; o.toff += s.toff.length; o.visa += (s.visa || []).length; o.med += (s.med || []).length;
       if (s.period >= o.from) { o.annual = s.annual; o.from = s.period; }
       if (s.da) get(s.da.year).slip = s;
     }
@@ -1343,10 +1516,10 @@ var Report = (function () {
       let da;
       if (o.slip) {
         da = C.dayAccount(o.slip.da);
-        da.status = 'Slip ' + C.periodShort(o.slip.period);
+        da.status = t.stSlip(C.periodShort(o.slip.period));
       } else {
-        da = C.dayAccount({ year: o.year, on: o.on, ton: o.ton, toff: o.toff, expected: rules.daExpected, rate: rules.daRate, travel: rules.daTravel, annual: o.annual });
-        da.status = o.months === 12 ? 'Dari 12 bulan' : 'Sementara';
+        da = C.dayAccount({ year: o.year, on: o.on, ton: o.ton, toff: o.toff, visa: o.visa, med: o.med, expected: rules.daExpected, rate: rules.daRate, travel: rules.daTravel, annual: o.annual });
+        da.status = o.months === 12 ? t.stFull : t.stProv;
       }
       da.months = o.months;
       return da;
@@ -1354,6 +1527,7 @@ var Report = (function () {
   }
 
   function build(mode, snaps, opt) {
+    const t = L();
     const isFull = mode === 'full';
     const now = opt.now || new Date();
     const rules = C.cleanRules(opt.rules);
@@ -1362,93 +1536,96 @@ var Report = (function () {
     const tot = C.totals(res);
     const allPs = C.periodsBetween(opt.from, opt.to);
     const missing = opt.missing || [];
-    const L = new PdfKit.Layout();
-    const title = isFull ? 'Rekap Gaji Rotasi' : 'Rekap Hari ON / OFF';
+    const Lo = new PdfKit.Layout();
+    const title = isFull ? t.titleFull : t.titleDates;
     const range = rangeLabel(opt.from, opt.to);
-    header(L, title, [
-      'Periode kerja: ' + range + (isFull ? '   |   Dibayar: ' + rangeLabel(C.addMonths(opt.from, 1), C.addMonths(opt.to, 1)) : ''),
-      res.length + ' dari ' + allPs.length + ' bulan dalam rentang tersimpan di riwayat'
+    header(Lo, title, [
+      t.work + range + (isFull ? '   |   ' + t.paid + rangeLabel(C.addMonths(opt.from, 1), C.addMonths(opt.to, 1)) : ''),
+      t.savedOf(res.length, allPs.length)
     ]);
-    L.pageHeader = function (l) {
+    Lo.pageHeader = function (l) {
       l.doc.text(l.m, 28, title + ' · ' + range, { size: 8, color: MUTED });
       l.doc.line(l.m, 34, l.m + l.cw, 34, '#d5dee4', 0.4);
       l.y = 46;
     };
 
     if (isFull) {
-      stats(L, [['Total kotor', money(tot.gross), NAVY], ['Asuransi + pension', money(tot.deductions), RED], ['Slopchest', money(tot.slop), RED], ['Claim expenses', money(tot.claims), GREEN], ['Total diterima', money(tot.net), ORANGE]]);
+      stats(Lo, [[t.sGross, money(tot.gross), NAVY], [t.sDed, money(tot.deductions), RED], [t.sSlop, money(tot.slop), RED], [t.sClaim, money(tot.claims), GREEN], [t.sNet, money(tot.net), ORANGE]]);
     }
-    stats(L, [['Hari ON', String(tot.on), ORANGE], ['Travel ON', String(tot.ton), YELLOW], ['Travel OFF', String(tot.toff), BLUE], ['OFF', String(tot.off), GREY]]);
+    stats(Lo, [[t.sOn, String(tot.on), ORANGE], ['Travel ON', String(tot.ton), YELLOW], ['Travel OFF', String(tot.toff), BLUE], ['Visa day', String(tot.visa), TEAL], ['Medical day', String(tot.med), MAGENTA], ['OFF', String(tot.off), GREY]]);
 
-    section(L, 'Per tahun');
+    section(Lo, t.secYear);
     const py = perYear(res);
     if (isFull) {
-      L.table([{ label: 'Tahun', w: 50 }, { label: 'Bulan', w: 42, align: 'c' }, { label: 'ON', w: 40, align: 'c' }, { label: 'Travel ON', w: 58, align: 'c' }, { label: 'Travel OFF', w: 60, align: 'c' }, { label: 'ON + Travel', w: 64, align: 'c' }, { label: 'Total kotor', w: 96, align: 'r' }, { label: 'Total diterima', w: 100, align: 'r' }],
-        py.map(function (o) { return [o.y, String(o.months), String(o.on), String(o.ton), String(o.toff), String(o.on + o.ton + o.toff), money(C.round2(o.gross)), money(C.round2(o.net))]; }));
+      Lo.table([{ label: t.year, w: 44 }, { label: t.months, w: 38, align: 'c' }, { label: 'ON', w: 34, align: 'c' }, { label: 'Travel ON', w: 46, align: 'c' }, { label: 'Travel OFF', w: 48, align: 'c' }, { label: 'Visa', w: 34, align: 'c' }, { label: 'Medical', w: 44, align: 'c' }, { label: t.totalGross, w: 90, align: 'r' }, { label: t.totalNet, w: 94, align: 'r' }],
+        py.map(function (o) { return [o.y, String(o.months), String(o.on), String(o.ton), String(o.toff), String(o.visa), String(o.med), money(C.round2(o.gross)), money(C.round2(o.net))]; }));
     } else {
-      L.table([{ label: 'Tahun', w: 60 }, { label: 'Bulan tercatat', w: 72, align: 'c' }, { label: 'ON', w: 55, align: 'c' }, { label: 'Travel ON', w: 65, align: 'c' }, { label: 'Travel OFF', w: 68, align: 'c' }, { label: 'ON + Travel', w: 75, align: 'c' }, { label: 'Expected / tahun', w: 105, align: 'c' }],
-        py.map(function (o) { return [o.y, String(o.months), String(o.on), String(o.ton), String(o.toff), String(o.on + o.ton + o.toff), C.fmtDays(rules.daExpected)]; }));
+      Lo.table([{ label: t.year, w: 50 }, { label: t.monthsRec, w: 62, align: 'c' }, { label: 'ON', w: 44, align: 'c' }, { label: 'Travel ON', w: 54, align: 'c' }, { label: 'Travel OFF', w: 56, align: 'c' }, { label: 'Visa', w: 40, align: 'c' }, { label: 'Medical', w: 50, align: 'c' }, { label: t.expectedYear, w: 84, align: 'c' }],
+        py.map(function (o) { return [o.y, String(o.months), String(o.on), String(o.ton), String(o.toff), String(o.visa), String(o.med), C.fmtDays(rules.daExpected)]; }));
     }
 
-    section(L, 'Annual Day Account');
+    section(Lo, t.secDa);
     const das = yearDa(list, rules);
     if (isFull) {
-      L.table([{ label: 'Tahun', w: 48 }, { label: 'Bulan', w: 42, align: 'c' }, { label: 'Hari dihitung', w: 62, align: 'c' }, { label: 'Expected', w: 56, align: 'c' }, { label: 'Selisih', w: 52, align: 'c' }, { label: 'Rate', w: 44, align: 'c' }, { label: 'Daily rate', w: 72, align: 'r' }, { label: 'Tambahan', w: 84, align: 'r' }, { label: 'Status', w: 70 }],
+      Lo.table([{ label: t.year, w: 48 }, { label: t.months, w: 42, align: 'c' }, { label: t.counted, w: 62, align: 'c' }, { label: 'Expected', w: 56, align: 'c' }, { label: t.diff, w: 52, align: 'c' }, { label: 'Rate', w: 44, align: 'c' }, { label: 'Daily rate', w: 72, align: 'r' }, { label: t.extra, w: 84, align: 'r' }, { label: t.status, w: 70 }],
         das.map(function (d) {
           return { cells: [String(d.year), String(d.months), C.fmtDays(d.counted), C.fmtDays(d.expected), C.fmtSigned(d.diff), C.fmtDays(d.rate) + '%', rate(d.dr), money(d.amount), d.status], fill: d.amount > 0 ? DA_FILL : null };
         }), { zebra: false });
     } else {
-      L.table([{ label: 'Tahun', w: 52 }, { label: 'Bulan tercatat', w: 64, align: 'c' }, { label: 'ON', w: 42, align: 'c' }, { label: 'Travel ON', w: 56, align: 'c' }, { label: 'Travel OFF', w: 58, align: 'c' }, { label: 'Hari dihitung', w: 62, align: 'c' }, { label: 'Expected', w: 56, align: 'c' }, { label: 'Selisih', w: 52, align: 'c' }, { label: 'Status', w: 68 }],
+      Lo.table([{ label: t.year, w: 46 }, { label: t.monthsRec, w: 56, align: 'c' }, { label: 'ON', w: 38, align: 'c' }, { label: 'Travel ON', w: 48, align: 'c' }, { label: 'Travel OFF', w: 50, align: 'c' }, { label: 'Visa + Med', w: 46, align: 'c' }, { label: t.counted, w: 56, align: 'c' }, { label: 'Expected', w: 52, align: 'c' }, { label: t.diff, w: 48, align: 'c' }, { label: t.status, w: 62 }],
         das.map(function (d) {
-          return { cells: [String(d.year), String(d.months), String(d.on), String(d.ton), String(d.toff), C.fmtDays(d.counted), C.fmtDays(d.expected), C.fmtSigned(d.diff), d.status], fill: d.diff > 0 ? DA_FILL : null };
+          return { cells: [String(d.year), String(d.months), String(d.on), String(d.ton), String(d.toff), String(d.visa + d.med), C.fmtDays(d.counted), C.fmtDays(d.expected), C.fmtSigned(d.diff), d.status], fill: d.diff > 0 ? DA_FILL : null };
         }), { zebra: false });
     }
 
-    section(L, 'Per bulan');
+    section(Lo, t.secMonth);
     if (isFull) {
       const rows = res.map(function (r) {
-        return [C.periodShort(r.period), C.periodShort(r.payPeriod), String(r.on), String(r.ton), String(r.toff), String(r.off), money(r.gross), minus(r.allDeductions), money(r.claimsTotal), money(r.net)];
+        return [C.periodShort(r.period), C.periodShort(r.payPeriod), String(r.on), String(r.ton), String(r.toff), String(r.visa), String(r.med), String(r.off), money(r.gross), minus(r.allDeductions), money(r.claimsTotal), money(r.net)];
       });
-      rows.push({ cells: ['Total', '', String(tot.on), String(tot.ton), String(tot.toff), String(tot.off), money(tot.gross), minus(tot.allDeductions), money(tot.claims), money(tot.net)], bold: true, fill: TOTAL_FILL });
-      L.table([{ label: 'Periode kerja', w: 58 }, { label: 'Dibayar', w: 54 }, { label: 'ON', w: 26, align: 'c' }, { label: 'Trv ON', w: 30, align: 'c' }, { label: 'Trv OFF', w: 32, align: 'c' }, { label: 'OFF', w: 26, align: 'c' }, { label: 'Kotor', w: 68, align: 'r' }, { label: 'Potongan + slopchest', w: 66, align: 'r' }, { label: 'Claim', w: 56, align: 'r' }, { label: 'Diterima', w: 70, align: 'r' }], rows, { size: 8 });
+      rows.push({ cells: [t.total, '', String(tot.on), String(tot.ton), String(tot.toff), String(tot.visa), String(tot.med), String(tot.off), money(tot.gross), minus(tot.allDeductions), money(tot.claims), money(tot.net)], bold: true, fill: TOTAL_FILL });
+      Lo.table([{ label: t.workPeriod, w: 54 }, { label: t.paidCol, w: 48 }, { label: 'ON', w: 23, align: 'c' }, { label: 'Trv ON', w: 27, align: 'c' }, { label: 'Trv OFF', w: 29, align: 'c' }, { label: 'Visa', w: 24, align: 'c' }, { label: 'Med', w: 24, align: 'c' }, { label: 'OFF', w: 23, align: 'c' }, { label: t.gross, w: 62, align: 'r' }, { label: t.dedSlop, w: 62, align: 'r' }, { label: t.claim, w: 50, align: 'r' }, { label: t.net, w: 64, align: 'r' }], rows, { size: 7.6 });
     } else {
       const rows = res.map(function (r) {
-        return [C.periodLabel(r.period), String(r.on), String(r.ton), String(r.toff), String(r.off),
-          r.on ? C.dayRanges(r.onDates) : '-', r.ton ? C.dayRanges(r.tonDates) : '-', r.toff ? C.dayRanges(r.toffDates) : '-'];
+        return [C.periodLabel(r.period), String(r.on), String(r.ton), String(r.toff), String(r.visa), String(r.med), String(r.off),
+          r.on ? C.dayRanges(r.onDates) : '-', r.ton ? C.dayRanges(r.tonDates) : '-', r.toff ? C.dayRanges(r.toffDates) : '-', vmText(r)];
       });
-      rows.push({ cells: ['Total', String(tot.on), String(tot.ton), String(tot.toff), String(tot.off), '', '', ''], bold: true, fill: TOTAL_FILL });
-      L.table([{ label: 'Periode', w: 74 }, { label: 'ON', w: 26, align: 'c' }, { label: 'Trv ON', w: 32, align: 'c' }, { label: 'Trv OFF', w: 34, align: 'c' }, { label: 'OFF', w: 26, align: 'c' }, { label: 'Tanggal ON', w: 135 }, { label: 'Tanggal Travel ON', w: 94 }, { label: 'Tanggal Travel OFF', w: 94 }], rows, { size: 8.2 });
+      rows.push({ cells: [t.total, String(tot.on), String(tot.ton), String(tot.toff), String(tot.visa), String(tot.med), String(tot.off), '', '', '', ''], bold: true, fill: TOTAL_FILL });
+      Lo.table([{ label: t.period, w: 64 }, { label: 'ON', w: 23, align: 'c' }, { label: 'Trv ON', w: 27, align: 'c' }, { label: 'Trv OFF', w: 29, align: 'c' }, { label: 'Visa', w: 24, align: 'c' }, { label: 'Med', w: 24, align: 'c' }, { label: 'OFF', w: 23, align: 'c' }, { label: t.onDates, w: 96 }, { label: t.tonDates, w: 64 }, { label: t.toffDates, w: 64 }, { label: t.vmDates, w: 72 }], rows, { size: 7.6 });
     }
 
     if (isFull) {
-      section(L, 'Rincian per bulan', 240);
+      section(Lo, t.secDetail, 240);
       res.forEach(function (r) {
-        L.ensure(190);
-        L.y += 8;
-        L.doc.text(L.m, L.y + 12, C.periodLabel(r.period), { size: 11, bold: true, color: INK });
-        L.doc.text(L.m + L.cw, L.y + 12, 'dibayar ' + C.periodLabel(r.payPeriod), { size: 9, color: MUTED, align: 'right' });
-        L.y += 16;
-        L.text('Annual ' + money(r.annual) + '  ·  Daily rate ' + rate(r.dr) + '  ·  ON ' + r.on + '  ·  Travel ON ' + r.ton + '  ·  Travel OFF ' + r.toff + '  ·  OFF ' + r.off, { size: 8.5, color: MUTED });
-        L.text('Tanggal ON: ' + (r.on ? C.dayRanges(r.onDates) : '-') + '     Travel ON: ' + (r.ton ? C.dayRanges(r.tonDates) : '-') + '     Travel OFF: ' + (r.toff ? C.dayRanges(r.toffDates) : '-'), { size: 8.5, color: INK });
-        L.y += 4;
+        Lo.ensure(190);
+        Lo.y += 8;
+        Lo.doc.text(Lo.m, Lo.y + 12, C.periodLabel(r.period), { size: 11, bold: true, color: INK });
+        Lo.doc.text(Lo.m + Lo.cw, Lo.y + 12, t.paidOn(C.periodLabel(r.payPeriod)), { size: 9, color: MUTED, align: 'right' });
+        Lo.y += 16;
+        Lo.text('Annual ' + money(r.annual) + '  ·  Daily rate ' + rate(r.dr) + '  ·  ON ' + r.on + '  ·  Travel ON ' + r.ton + '  ·  Travel OFF ' + r.toff +
+          (r.visa ? '  ·  Visa ' + r.visa : '') + (r.med ? '  ·  Medical ' + r.med : '') + '  ·  OFF ' + r.off, { size: 8.5, color: MUTED });
+        Lo.text(t.datesLine(r.on ? C.dayRanges(r.onDates) : '-', r.ton ? C.dayRanges(r.tonDates) : '-', r.toff ? C.dayRanges(r.toffDates) : '-') + (r.visa || r.med ? '     ' + vmText(r) : ''), { size: 8.5, color: INK });
+        Lo.y += 4;
         const rows = [
           ['Guarantee', '70% × annual ÷ 12', money(r.guarantee)],
-          ['Tambahan ON', r.on + ' hari × ' + rate(r.onAdd), money(r.onPay)],
-          ['Tambahan Travel ON', r.ton + ' hari × ' + rate(r.trvAdd), money(r.tonPay)],
-          ['Tambahan Travel OFF', r.toff + ' hari × ' + rate(r.trvAdd), money(r.toffPay)]
+          [t.lOn, t.nDays(r.on, rate(r.onAdd)), money(r.onPay)],
+          [t.lTon, t.nDays(r.ton, rate(r.trvAdd)), money(r.tonPay)],
+          [t.lToff, t.nDays(r.toff, rate(r.trvAdd)), money(r.toffPay)]
         ];
+        if (r.visa) rows.push([t.lVisa, t.nDays(r.visa, rate(r.trvAdd)), money(r.visaPay)]);
+        if (r.med) rows.push([t.lMed, t.nDays(r.med, rate(r.trvAdd)), money(r.medPay)]);
         if (r.da) rows.push({ cells: ['Annual Day Account ' + r.da.year, daLine(r.da), money(r.da.amount)], fill: r.da.amount > 0 ? DA_FILL : null });
-        rows.push({ cells: ['Gaji kotor', '', money(r.gross)], bold: true });
-        rows.push(['Asuransi', '', minus(r.insurance)]);
-        rows.push(['Pension plan', '', minus(r.pension)]);
+        rows.push({ cells: [t.lGross, '', money(r.gross)], bold: true });
+        rows.push([t.lIns, '', minus(r.insurance)]);
+        rows.push([t.lPen, '', minus(r.pension)]);
         r.slop.forEach(function (c) { rows.push(['Slopchest: ' + c.desc, '', minus(c.amount)]); });
         r.claims.forEach(function (c) { rows.push(['Claim: ' + c.desc, '', '+' + money(c.amount)]); });
-        rows.push({ cells: ['Diterima', '', money(r.net)], bold: true, fill: TOTAL_FILL });
-        L.table([{ label: 'Komponen', w: 200 }, { label: 'Perhitungan', w: 190 }, { label: 'Jumlah', w: 125, align: 'r' }], rows, { headFill: '#e2ebf0', headColor: INK, zebra: false });
+        rows.push({ cells: [t.lNet, '', money(r.net)], bold: true, fill: TOTAL_FILL });
+        Lo.table([{ label: t.comp, w: 200 }, { label: t.calc, w: 190 }, { label: t.amount, w: 125, align: 'r' }], rows, { headFill: '#e2ebf0', headColor: INK, zebra: false });
       });
     }
 
-    section(L, 'Daftar rotasi (hari ON/Travel berurutan)');
+    section(Lo, t.secRot);
     const map = {};
     list.forEach(function (s) {
       s.on.forEach(function (d) { map[d] = 'ON'; });
@@ -1457,32 +1634,28 @@ var Report = (function () {
     });
     const blocks = C.rotationBlocks(map);
     if (blocks.length) {
-      L.table([{ label: 'No', w: 28, align: 'c' }, { label: 'Mulai', w: 95 }, { label: 'Selesai', w: 95 }, { label: 'Jumlah hari', w: 70, align: 'c' }, { label: 'Travel ON', w: 72, align: 'c' }, { label: 'ON', w: 60, align: 'c' }, { label: 'Travel OFF', w: 75, align: 'c' }],
+      Lo.table([{ label: t.no, w: 28, align: 'c' }, { label: t.start, w: 95 }, { label: t.end, w: 95 }, { label: t.days, w: 70, align: 'c' }, { label: 'Travel ON', w: 72, align: 'c' }, { label: 'ON', w: 60, align: 'c' }, { label: 'Travel OFF', w: 75, align: 'c' }],
         blocks.map(function (b, i) { return [String(i + 1), C.dateLabel(b.start), C.dateLabel(b.end), String(b.days), String(b.ton), String(b.on), String(b.toff)]; }));
-    } else L.text('Tidak ada hari ON atau Travel pada data tersimpan.', { size: 9, color: MUTED });
+    } else Lo.text(t.noRot, { size: 9, color: MUTED });
 
-    L.y += 10;
+    Lo.y += 10;
     const notes = [];
-    if (missing.length) notes.push('Bulan dalam rentang yang belum disimpan di riwayat: ' + listPeriods(missing, 24) + '.');
-    notes.push('Blok rotasi di awal atau akhir rentang bisa terpotong oleh batas rentang atau bulan yang belum disimpan.');
-    notes.push('Annual Day Account: hari dihitung = ON' + (rules.daTravel ? ' + Travel ON + Travel OFF' : '') + ', dibanding expected ' + C.fmtDays(rules.daExpected) + ' hari per tahun. ' +
-      (isFull ? 'Kelebihan hari × ' + C.fmtDays(rules.daRate) + '% × daily rate (annual bulan terakhir tahun itu ÷ 365), dibayar bersama gaji ' + C.MONTHS[rules.daPayMonth - 1] + ' tahun berikutnya. ' : '') +
-      'Kalau slip pembayaran Day Account ada di rentang, angkanya sama dengan slip itu (seluruh hari yang ditandai di tahun tersebut). Kalau tidak, dihitung dari bulan tersimpan dalam rentang dan ditandai Sementara bila belum 12 bulan.');
-    if (isFull) {
-      notes.push('Rumus: daily rate = annual ÷ 365; guarantee = 70% × annual ÷ 12 per bulan; tambahan ON = 60% × daily rate per hari; tambahan Travel ON / Travel OFF = 30% × daily rate per hari. Hari dihitung tanggal 1 sampai akhir bulan dan dibayarkan bulan berikutnya. Diterima = gaji kotor - asuransi - pension - slopchest + claim.');
-    }
-    notes.push('Dokumen ini dibuat dari data riwayat aplikasi Gaji Rotasi, bukan slip gaji resmi perusahaan.');
-    notes.forEach(function (t) { L.text(t, { size: 8, color: MUTED, lh: 11.5 }); });
+    if (missing.length) notes.push(t.nMissing(listPeriods(missing, 24)));
+    notes.push(t.nCut);
+    notes.push(t.nDa(rules.daTravel, C.fmtDays(rules.daExpected), isFull, C.fmtDays(rules.daRate), C.MONTHS[rules.daPayMonth - 1]));
+    if (isFull) notes.push(t.nFormula);
+    notes.push(t.nNotOfficial);
+    notes.forEach(function (x) { Lo.text(x, { size: 8, color: MUTED, lh: 11.5 }); });
 
-    const total = L.doc.pages.length;
+    const total = Lo.doc.pages.length;
     for (let i = 0; i < total; i++) {
-      L.doc.onPage(i, function () {
-        L.doc.line(L.m, L.H - 36, L.m + L.cw, L.H - 36, '#d5dee4', 0.4);
-        L.doc.text(L.m, L.H - 24, 'Gaji Rotasi · dibuat ' + human(now), { size: 7.5, color: MUTED });
-        L.doc.text(L.m + L.cw, L.H - 24, 'Halaman ' + (i + 1) + ' / ' + total, { size: 7.5, color: MUTED, align: 'right' });
+      Lo.doc.onPage(i, function () {
+        Lo.doc.line(Lo.m, Lo.H - 36, Lo.m + Lo.cw, Lo.H - 36, '#d5dee4', 0.4);
+        Lo.doc.text(Lo.m, Lo.H - 24, t.created(human(now)), { size: 7.5, color: MUTED });
+        Lo.doc.text(Lo.m + Lo.cw, Lo.H - 24, t.page(i + 1, total), { size: 7.5, color: MUTED, align: 'right' });
       });
     }
-    return L.doc.output({ title: title + ' - ' + range, date: pdfDate(now) });
+    return Lo.doc.output({ title: title + ' - ' + range, date: pdfDate(now) });
   }
   return { build: build, fileName: fileName };
 })();
@@ -1492,11 +1665,301 @@ var Report = (function () {
 var App = (function () {
   'use strict';
   const KEY = 'gajiRotasi.v1';
-  const VERSION = '1.2.0';
+  const VERSION = '1.4.0';
   const C = Core;
   const $ = function (id) { return document.getElementById(id); };
   const esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
   const TABS = ['bulan', 'tahun', 'export', 'data'];
+  function dw(n) { return n === 1 ? 'day' : 'days'; }
+
+  /* ----- teks antarmuka (ID / EN) ----- */
+  const STR = {
+    id: {
+      'app.sub': 'Hitung gaji bulanan rotasi ON/OFF', 'lang.aria': 'Bahasa',
+      'aria.prevMonth': 'Bulan sebelumnya', 'aria.nextMonth': 'Bulan berikutnya', 'aria.prevYear': 'Tahun sebelumnya', 'aria.nextYear': 'Tahun berikutnya',
+      'aria.dayType': 'Jenis hari', 'aria.strip': 'Hari kerja sepanjang tahun', 'aria.group': 'Kelompokkan', 'aria.menu': 'Menu',
+      'nav.thisMonth': 'Ke bulan ini',
+      'welcome.t': 'Mulai di sini',
+      'welcome.1': 'Isi gaji tahunan (USD), asuransi, dan pension per bulan.',
+      'welcome.2': 'Pilih jenis hari, lalu ketuk tanggal di kalender.',
+      'welcome.3': 'Tambahkan claim atau slopchest kalau ada, lalu tekan <b>Simpan</b>.',
+      's1.t': 'Gaji & potongan tetap', 'f.annual': 'Gaji tahunan (annual salary, USD)', 'f.ins': 'Asuransi per bulan', 'f.pen': 'Pension plan per bulan',
+      'btn.done': 'Selesai', 'btn.edit': 'Ubah',
+      's2.t': 'Tandai hari', 's2.p': 'Pilih jenis hari, lalu ketuk tanggal. Ketuk lagi untuk kembali ke OFF.',
+      'b.on': '130%, kerja di kapal', 'b.ton': '100%, berangkat', 'b.toff': '100%, pulang', 'b.visa': '100%, urus visa', 'b.med': '100%, cek medis', 'b.off': '70%, di rumah',
+      'wd.0': 'Sen', 'wd.1': 'Sel', 'wd.2': 'Rab', 'wd.3': 'Kam', 'wd.4': 'Jum', 'wd.5': 'Sab', 'wd.6': 'Min',
+      'btn.range': 'Isi rentang tanggal', 'btn.clearMonth': 'Kosongkan bulan',
+      's3.t': 'Claim & slopchest', 's3.p': 'Claim menambah gaji. Slopchest (belanja di kapal) mengurangi gaji.',
+      'claim.t': 'Claim expenses', 'claim.em': 'Uang yang diganti perusahaan', 'claim.ph': 'Keterangan, mis. taksi bandara', 'claim.aDesc': 'Keterangan claim', 'claim.aAmt': 'Nominal claim', 'claim.add': 'Tambah claim', 'claim.added': 'Claim ditambahkan.',
+      'slop.t': 'Slopchest', 'slop.em': 'Belanja di kapal, dipotong dari gaji', 'slop.ph': 'Keterangan, mis. rokok, snack', 'slop.aDesc': 'Keterangan slopchest', 'slop.aAmt': 'Nominal slopchest', 'slop.add': 'Tambah slopchest', 'slop.added': 'Slopchest ditambahkan.',
+      's4.t': 'Rincian gaji', 's4.p': 'Hari dihitung tanggal 1 sampai akhir bulan, dibayar bulan berikutnya.',
+      'btn.revert': 'Kembalikan ke versi tersimpan', 'btn.delHist': 'Hapus dari riwayat',
+      'year.sub': 'Annual Day Account dan rekap tahunan',
+      'rules.t': 'Aturan Day Account', 'rules.expected': 'Expected hari kerja per tahun', 'rules.days': 'hari', 'rules.rate': 'Bayaran kelebihan hari',
+      'rules.travel': 'Hari 100% (Travel ON/OFF, Visa day, Medical day) ikut dihitung sebagai hari kerja', 'rules.payMonth': 'Kelebihan dibayar bersama gaji bulan (tahun berikutnya)',
+      'rules.note': 'Berlaku untuk semua tahun. Slip yang sudah disimpan tetap memakai aturan saat disimpan.',
+      'strip.t': 'Strip rotasi', 'months.t': 'Per bulan', 'months.tip': 'Ketuk bulan untuk membuka atau mengubahnya.',
+      'totals.t': 'Total tersimpan', 'group.work': 'Per periode kerja', 'group.pay': 'Per bulan dibayar',
+      'ex.note': 'PDF dibuat dari bulan yang sudah disimpan.', 'ex.from': 'Dari', 'ex.to': 'Sampai',
+      'ex.aFromM': 'Bulan awal', 'ex.aFromY': 'Tahun awal', 'ex.aToM': 'Bulan akhir', 'ex.aToY': 'Tahun akhir',
+      'ex.thisYear': 'Tahun ini', 'ex.all': 'Semua riwayat',
+      'ex.datesT': 'Tanggal ON/OFF saja', 'ex.datesD': 'Untuk tracking hari kerja, rotasi, dan Day Account, tanpa nominal gaji',
+      'ex.fullT': 'Lengkap dengan gaji', 'ex.fullD': 'Tanggal, rincian gaji, potongan, slopchest, claim, dan Day Account',
+      'ex.btnFull': 'Download PDF (lengkap)', 'ex.btnDates': 'Download PDF (tanggal)', 'ex.share': 'Bagikan / Simpan ke Files',
+      'guide.t': 'Cara pakai',
+      'guide.1': 'Di tab <b>Bulan</b>, isi gaji tahunan, asuransi, dan pension. Nilainya otomatis dipakai bulan-bulan berikutnya.',
+      'guide.2': 'Pilih jenis hari (ON, Travel ON, Travel OFF, Visa day, Medical day, OFF), lalu ketuk tanggal. Untuk satu hitch sekaligus, pakai <b>Isi rentang tanggal</b>.',
+      'guide.3': 'Tambahkan claim (uang diganti) dan slopchest (belanja di kapal) kalau ada.',
+      'guide.4': 'Tekan <b>Simpan</b>. Bulan yang disimpan masuk riwayat dan bisa diexport PDF.',
+      'guide.5': 'Buka tab <b>Tahun</b> untuk melihat Annual Day Account: apakah hari kerja melebihi 182,5 hari.',
+      'calc.t': 'Cara hitung',
+      'calc.1': '<b>Daily rate (DR)</b> = annual ÷ 365',
+      'calc.2': '<b>Guarantee</b> = 70% × annual ÷ 12, tetap setiap bulan',
+      'calc.3': '<b>Tambahan ON</b> = 0,6 × DR per hari (130% − 70%)',
+      'calc.4': '<b>Tambahan Travel ON/OFF, Visa day, Medical day</b> = 0,3 × DR per hari (100% − 70%)',
+      'calc.5': '<b>Annual Day Account</b> = kelebihan hari di atas 182,5 × 130% × DR, dibayar tahun berikutnya',
+      'calc.6': '<b>Diterima</b> = gaji kotor − asuransi − pension − slopchest + claim',
+      'calc.note': 'Kalau ON tepat 182,5 hari setahun, total gaji kotor sama dengan annual salary.',
+      'bk.t': 'Backup & pulihkan', 'bk.note': 'Data tersimpan di perangkat ini. Download backup secara berkala supaya aman kalau ganti HP atau data browser terhapus.',
+      'bk.dl': 'Download backup (.json)', 'bk.restore': 'Pulihkan dari backup',
+      'wipe.t': 'Hapus semua data', 'wipe.note': 'Menghapus kalender, claim, slopchest, pengaturan, dan riwayat dari perangkat ini.',
+      'tab.bulan': 'Bulan', 'tab.tahun': 'Tahun', 'tab.data': 'Lainnya',
+      'ver': function (p) { return 'Gaji Rotasi v' + p.v + ', data lokal ' + p.s; },
+      // dinamis
+      'mon.paid': 'Gaji dibayar {p}',
+      'st.saved': '✓ Tersimpan di riwayat', 'st.changed': 'Berubah sejak disimpan', 'st.daChanged': 'Day Account berubah, simpan ulang', 'st.none': 'Belum disimpan',
+      'save.new': 'Simpan', 'save.changed': 'Simpan perubahan', 'save.done': '✓ Tersimpan',
+      'sb.net': 'Diterima, dibayar {p}', 'sb.empty': 'Isi gaji tahunan dulu',
+      'cfg.unset': 'Belum diisi', 'cfg.from': 'Memakai pengaturan {p}', 'cfg.own': 'Diatur di bulan ini',
+      'cfg.derived': 'Daily rate <b>{dr}</b>, guarantee <b>{g}</b> per bulan', 'cfg.derivedEmpty': 'Isi gaji tahunan untuk menghitung daily rate dan guarantee.',
+      'cfg.sumAnnual': 'Annual', 'cfg.sumIns': 'Asuransi/bln', 'cfg.sumPen': 'Pension/bln',
+      'led.count': function (p) { return p.n + ' item, ' + p.total; }, 'led.none': 'Belum ada', 'led.del': 'Hapus {d}', 'led.max': 'Maksimal {n} item per bulan.',
+      'res.empty': 'Isi <b>gaji tahunan</b> di langkah 1 untuk melihat rincian bulan ini.',
+      'res.invalid': 'Ada input yang belum valid. Hasil di bawah memakai nilai terakhir yang valid.',
+      'res.net': 'Diterima, dibayar {p}', 'res.gross': 'Gaji kotor',
+      'sl.on': 'Tambahan ON', 'sl.ton': 'Tambahan Travel ON', 'sl.toff': 'Tambahan Travel OFF', 'sl.visa': 'Tambahan Visa day', 'sl.med': 'Tambahan Medical day',
+      'sl.days': function (p) { return p.n + ' hari × ' + p.r; },
+      'sl.daOver': function (p) { return 'Lebih ' + p.x + ' hari × ' + p.rate + '% × ' + p.dr; },
+      'sl.daNone': function (p) { return 'Tidak ada kelebihan (' + p.c + ' dari ' + p.e + ' hari)'; },
+      'sl.gross': 'Gaji kotor', 'sl.ins': 'Asuransi', 'sl.net': 'Diterima',
+      'da.view': 'Lihat tahun',
+      'da.mini': function (p) { return '<b>' + p.c + '</b> dari ' + p.e + ' hari. ' + p.v + '.'; },
+      'da.shortOver': function (p) { return 'Lebih ' + p.x + ' hari, ada tambahan gaji'; },
+      'da.shortExact': function (p) { return 'Tepat ' + p.e + ' hari, tidak ada kelebihan'; },
+      'da.shortUnder': function (p) { return 'Kurang ' + p.x + ' hari untuk mencapai ' + p.e; },
+      'da.counted': function (p) { return 'hari dihitung dari expected ' + p.e + ' hari'; },
+      'da.gaugeAria': function (p) { return p.c + ' dari ' + p.e + ' hari'; },
+      'da.travelOn': 'Hari 100% ikut dihitung', 'da.travelOff': 'Hanya ON yang dihitung',
+      'da.payWith': 'dibayar bersama gaji {p}', 'da.payOut': 'di luar rentang tahun aplikasi',
+      'da.over': function (p) { return 'Lebih <b>' + p.x + ' hari</b>, berhak tambahan gaji.'; },
+      'da.noAnnual': 'Isi gaji tahunan untuk menghitung nominal tambahan.',
+      'da.exact': function (p) { return 'Tepat <b>' + p.e + ' hari</b>. Tidak ada kelebihan hari.'; },
+      'da.under': function (p) { return 'Kurang <b>' + p.x + ' hari</b> dari ' + p.e + '. Belum ada tambahan gaji.'; },
+      'da.need': function (p) { return 'Butuh ' + p.n + ' hari kerja lagi supaya ada kelebihan.'; },
+      'da.notOver': function (p) { return 'Tahun ' + p.y + ' belum selesai. Angka di atas dari tanggal yang sudah ditandai' + (p.n ? ', termasuk ' + p.n + ' hari yang direncanakan setelah hari ini' : '') + '.'; },
+      'da.openSlip': 'Buka slip {p}',
+      'ym.saved': '✓ Tersimpan', 'ym.changed': 'Berubah, belum disimpan ulang', 'ym.none': 'Belum disimpan', 'ym.empty': 'Kosong',
+      'tot.empty': 'Belum ada bulan tersimpan di {y}. Simpan bulan dari tab Bulan.',
+      'tot.net': 'Total diterima', 'tot.gross': 'Gaji kotor', 'tot.ded': 'Asuransi + pension', 'tot.da': 'Day Account dibayar',
+      'tot.note': function (p) { return 'Dari ' + p.n + ' bulan tersimpan, dikelompokkan ' + (p.pay ? 'per bulan dibayar' : 'per periode kerja') + '.'; },
+      'rg.title': 'Isi rentang tanggal', 'rg.type': 'Jenis',
+      'rg.optOn': 'ON (+ travel di awal/akhir)', 'rg.optTon': 'Travel ON semua', 'rg.optToff': 'Travel OFF semua', 'rg.optVisa': 'Visa day semua', 'rg.optMed': 'Medical day semua', 'rg.optOff': 'OFF (kosongkan)',
+      'rg.prevAll': function (p) { return p.n + ' hari ' + p.type; },
+      'rg.ton': 'Travel ON di awal', 'rg.toff': 'Travel OFF di akhir',
+      'rg.nDays': function (p) { return p.n + ' hari'; },
+      'rg.note': 'Rentang boleh melewati beberapa bulan. Travel ON = hari berangkat, Travel OFF = hari pulang.',
+      'rg.prevOff': function (p) { return p.n + ' hari dijadikan OFF'; },
+      'rg.prevTon': function (p) { return p.n + ' hari Travel ON'; },
+      'rg.prevToff': function (p) { return p.n + ' hari Travel OFF'; },
+      'rg.prevOn': function (p) { return p.n + ' hari: ' + p.parts; },
+      'rg.done': function (p) { return p.n + ' hari diperbarui (' + p.where + ')'; },
+      'rg.months': '{n} bulan',
+      'btn.cancel': 'Batal', 'btn.apply': 'Terapkan',
+      'cl.already': 'Semua tanggal bulan ini sudah OFF.', 'cl.title': 'Kosongkan {p}?',
+      'cl.text': function (p) { return p.n + ' tanggal ON/Travel di bulan ini akan dijadikan OFF.'; }, 'cl.btn': 'Kosongkan', 'cl.done': '{p} dikosongkan.',
+      'per.out': 'Di luar rentang tahun yang didukung (2000–2100).',
+      'err.fix': 'Perbaiki input yang ditandai merah dulu.', 'err.annual': 'Isi gaji tahunan dulu.',
+      'sv.already': 'Sudah tersimpan.', 'sv.title': 'Timpa riwayat {p}?',
+      'sv.daText': 'Hari kerja di bulan lain berubah, jadi Annual Day Account di slip ini ikut berubah. Simpan versi terbaru?',
+      'sv.text': 'Data tersimpan sebelumnya akan diganti dengan perhitungan saat ini.', 'sv.btn': 'Timpa', 'sv.done': 'Tersimpan ke riwayat: {p}',
+      'rv.title': 'Kembalikan {p}?', 'rv.text': 'Kalender, gaji tetap, claim, dan slopchest bulan ini dikembalikan ke versi yang tersimpan di riwayat.', 'rv.btn': 'Kembalikan', 'rv.done': 'Dikembalikan ke versi tersimpan.',
+      'dh.title': 'Hapus riwayat {p}?', 'dh.text': 'Hanya riwayatnya yang dihapus. Tanggal di kalender, claim, dan slopchest bulan itu tetap ada.', 'dh.btn': 'Hapus', 'dh.done': 'Riwayat {p} dihapus.',
+      'ex.order': 'Bulan "Dari" harus sebelum atau sama dengan "Sampai".',
+      'ex.none': 'Belum ada bulan tersimpan di rentang ini. Simpan dulu perhitungan bulanannya di tab Bulan.',
+      'ex.count': function (p) { return '<b>' + p.n + '</b> dari ' + p.m + ' bulan dalam rentang sudah tersimpan dan akan masuk PDF.'; },
+      'ex.missing': 'Belum disimpan (tidak masuk PDF): {l}',
+      'ex.changed': function (p) { return p.n + ' bulan punya perubahan yang belum disimpan (' + p.l + '). PDF memakai versi yang tersimpan.'; },
+      'list.more': ' dan {n} lainnya',
+      'ex.noSaved': 'Tidak ada riwayat tersimpan di rentang ini.', 'ex.done': 'PDF dibuat: {n}', 'ex.fail': 'Gagal membuat PDF. ', 'ex.noHist': 'Belum ada riwayat.',
+      'bk.done': 'Backup dibuat.', 'rs.big': 'File terlalu besar (maksimal 5 MB).', 'rs.json': 'File bukan JSON yang valid.', 'rs.notOurs': 'File ini bukan backup Gaji Rotasi.',
+      'rs.read': 'File tidak bisa dibaca.', 'rs.title': 'Pulihkan backup?',
+      'rs.text': function (p) { return 'Backup berisi ' + p.h + ' bulan riwayat dan ' + p.d + ' tanggal ON/Travel' + (p.x ? ' (' + p.x + ' entri tidak valid akan diabaikan)' : '') + '. Semua data di perangkat ini akan diganti.'; },
+      'rs.btn': 'Pulihkan', 'rs.done': 'Backup dipulihkan.', 'rs.fail': 'Gagal memulihkan backup.',
+      'wp.title': 'Hapus semua data?', 'wp.text': 'Kalender, claim, slopchest, gaji tetap, aturan Day Account, dan seluruh riwayat akan dihapus dari perangkat ini. Disarankan download backup dulu.',
+      'wp.btn': 'Hapus semua', 'wp.done': 'Semua data dihapus.',
+      'sto.corrupt': 'Data tersimpan rusak dan tidak bisa dibaca. Salinannya disisihkan; aplikasi mulai dari data kosong.',
+      'sto.dropped': function (p) { return p.n + ' entri data tidak valid diabaikan.'; },
+      'sto.blocked': 'Penyimpanan perangkat tidak bisa diakses. Data hanya bertahan selama aplikasi terbuka.',
+      'sto.fail': 'Gagal menyimpan ke perangkat (penyimpanan penuh atau diblokir). Perubahan belum tersimpan permanen.'
+    },
+    en: {
+      'app.sub': 'Monthly pay calculator for ON/OFF rotation', 'lang.aria': 'Language',
+      'aria.prevMonth': 'Previous month', 'aria.nextMonth': 'Next month', 'aria.prevYear': 'Previous year', 'aria.nextYear': 'Next year',
+      'aria.dayType': 'Day type', 'aria.strip': 'Work days across the year', 'aria.group': 'Group by', 'aria.menu': 'Menu',
+      'nav.thisMonth': 'Go to this month',
+      'welcome.t': 'Start here',
+      'welcome.1': 'Enter your annual salary (USD), plus monthly insurance and pension.',
+      'welcome.2': 'Pick a day type, then tap dates on the calendar.',
+      'welcome.3': 'Add claims or slopchest if you have any, then tap <b>Save</b>.',
+      's1.t': 'Salary & fixed deductions', 'f.annual': 'Annual salary (USD)', 'f.ins': 'Insurance per month', 'f.pen': 'Pension plan per month',
+      'btn.done': 'Done', 'btn.edit': 'Edit',
+      's2.t': 'Mark days', 's2.p': 'Pick a day type, then tap a date. Tap it again to set it back to OFF.',
+      'b.on': '130%, working on board', 'b.ton': '100%, travelling out', 'b.toff': '100%, travelling home', 'b.visa': '100%, visa appointment', 'b.med': '100%, medical check', 'b.off': '70%, at home',
+      'wd.0': 'Mon', 'wd.1': 'Tue', 'wd.2': 'Wed', 'wd.3': 'Thu', 'wd.4': 'Fri', 'wd.5': 'Sat', 'wd.6': 'Sun',
+      'btn.range': 'Fill a date range', 'btn.clearMonth': 'Clear month',
+      's3.t': 'Claims & slopchest', 's3.p': 'Claims add to your pay. Slopchest (onboard purchases) is deducted from it.',
+      'claim.t': 'Claim expenses', 'claim.em': 'Money the company pays back', 'claim.ph': 'Description, e.g. airport taxi', 'claim.aDesc': 'Claim description', 'claim.aAmt': 'Claim amount', 'claim.add': 'Add claim', 'claim.added': 'Claim added.',
+      'slop.t': 'Slopchest', 'slop.em': 'Onboard purchases, deducted from pay', 'slop.ph': 'Description, e.g. cigarettes, snacks', 'slop.aDesc': 'Slopchest description', 'slop.aAmt': 'Slopchest amount', 'slop.add': 'Add slopchest', 'slop.added': 'Slopchest added.',
+      's4.t': 'Pay breakdown', 's4.p': 'Days count from the 1st to the last day of the month and are paid the following month.',
+      'btn.revert': 'Restore saved version', 'btn.delHist': 'Delete from history',
+      'year.sub': 'Annual Day Account and yearly summary',
+      'rules.t': 'Day Account rules', 'rules.expected': 'Expected work days per year', 'rules.days': 'days', 'rules.rate': 'Pay for extra days',
+      'rules.travel': 'Count 100% days (Travel ON/OFF, Visa day, Medical day) as work days', 'rules.payMonth': 'Extra days are paid with the salary of (following year)',
+      'rules.note': 'Applies to all years. Saved slips keep the rules that applied when they were saved.',
+      'strip.t': 'Rotation strip', 'months.t': 'By month', 'months.tip': 'Tap a month to open or edit it.',
+      'totals.t': 'Saved totals', 'group.work': 'By work period', 'group.pay': 'By pay month',
+      'ex.note': 'The PDF is built from saved months.', 'ex.from': 'From', 'ex.to': 'To',
+      'ex.aFromM': 'Start month', 'ex.aFromY': 'Start year', 'ex.aToM': 'End month', 'ex.aToY': 'End year',
+      'ex.thisYear': 'This year', 'ex.all': 'All history',
+      'ex.datesT': 'ON/OFF dates only', 'ex.datesD': 'For tracking work days, rotations and Day Account, without pay amounts',
+      'ex.fullT': 'Full, with pay', 'ex.fullD': 'Dates, pay breakdown, deductions, slopchest, claims and Day Account',
+      'ex.btnFull': 'Download PDF (full)', 'ex.btnDates': 'Download PDF (dates)', 'ex.share': 'Share / Save to Files',
+      'guide.t': 'How to use',
+      'guide.1': 'In the <b>Month</b> tab, enter your annual salary, insurance and pension. The values carry over to the following months.',
+      'guide.2': 'Pick a day type (ON, Travel ON, Travel OFF, Visa day, Medical day, OFF), then tap dates. To mark a whole hitch at once, use <b>Fill a date range</b>.',
+      'guide.3': 'Add claims (money paid back) and slopchest (onboard purchases) if you have any.',
+      'guide.4': 'Tap <b>Save</b>. Saved months go into history and can be exported as PDF.',
+      'guide.5': 'Open the <b>Year</b> tab to see the Annual Day Account: whether your work days go over 182.5.',
+      'calc.t': 'How pay is calculated',
+      'calc.1': '<b>Daily rate (DR)</b> = annual ÷ 365',
+      'calc.2': '<b>Guarantee</b> = 70% × annual ÷ 12, the same every month',
+      'calc.3': '<b>ON top-up</b> = 0.6 × DR per day (130% − 70%)',
+      'calc.4': '<b>Travel ON/OFF, Visa day, Medical day top-up</b> = 0.3 × DR per day (100% − 70%)',
+      'calc.5': '<b>Annual Day Account</b> = days over 182.5 × 130% × DR, paid the following year',
+      'calc.6': '<b>Net pay</b> = gross pay − insurance − pension − slopchest + claims',
+      'calc.note': 'With exactly 182.5 ON days in a year, total gross pay equals the annual salary.',
+      'bk.t': 'Backup & restore', 'bk.note': 'Your data is stored on this device. Download a backup regularly so nothing is lost if you change phones or clear browser data.',
+      'bk.dl': 'Download backup (.json)', 'bk.restore': 'Restore from backup',
+      'wipe.t': 'Delete all data', 'wipe.note': 'Deletes the calendar, claims, slopchest, settings and history from this device.',
+      'tab.bulan': 'Month', 'tab.tahun': 'Year', 'tab.data': 'More',
+      'ver': function (p) { return 'Gaji Rotasi v' + p.v + ', local data ' + p.s; },
+      'mon.paid': 'Paid in {p}',
+      'st.saved': '✓ Saved to history', 'st.changed': 'Changed since saved', 'st.daChanged': 'Day Account changed, save again', 'st.none': 'Not saved',
+      'save.new': 'Save', 'save.changed': 'Save changes', 'save.done': '✓ Saved',
+      'sb.net': 'Net pay, paid {p}', 'sb.empty': 'Enter annual salary first',
+      'cfg.unset': 'Not set', 'cfg.from': 'Using settings from {p}', 'cfg.own': 'Set in this month',
+      'cfg.derived': 'Daily rate <b>{dr}</b>, guarantee <b>{g}</b> per month', 'cfg.derivedEmpty': 'Enter your annual salary to calculate the daily rate and guarantee.',
+      'cfg.sumAnnual': 'Annual', 'cfg.sumIns': 'Insurance/mo', 'cfg.sumPen': 'Pension/mo',
+      'led.count': function (p) { return p.n + (p.n === 1 ? ' item, ' : ' items, ') + p.total; }, 'led.none': 'None yet', 'led.del': 'Delete {d}', 'led.max': 'Maximum {n} items per month.',
+      'res.empty': 'Enter your <b>annual salary</b> in step 1 to see this month\'s breakdown.',
+      'res.invalid': 'Some fields are invalid. The results below use the last valid values.',
+      'res.net': 'Net pay, paid {p}', 'res.gross': 'Gross pay',
+      'sl.on': 'ON top-up', 'sl.ton': 'Travel ON top-up', 'sl.toff': 'Travel OFF top-up', 'sl.visa': 'Visa day top-up', 'sl.med': 'Medical day top-up',
+      'sl.days': function (p) { return p.n + ' ' + dw(p.n) + ' × ' + p.r; },
+      'sl.daOver': function (p) { return p.x + ' extra ' + dw(p.n) + ' × ' + p.rate + '% × ' + p.dr; },
+      'sl.daNone': function (p) { return 'No extra days (' + p.c + ' of ' + p.e + ' days)'; },
+      'sl.gross': 'Gross pay', 'sl.ins': 'Insurance', 'sl.net': 'Net pay',
+      'da.view': 'View year',
+      'da.mini': function (p) { return '<b>' + p.c + '</b> of ' + p.e + ' days. ' + p.v + '.'; },
+      'da.shortOver': function (p) { return p.x + ' ' + dw(p.n) + ' over, extra pay due'; },
+      'da.shortExact': function (p) { return 'Exactly ' + p.e + ' days, no extra days'; },
+      'da.shortUnder': function (p) { return p.x + ' ' + dw(p.n) + ' short of ' + p.e; },
+      'da.counted': function (p) { return dw(p.n) + ' counted against an expected ' + p.e + ' days'; },
+      'da.gaugeAria': function (p) { return p.c + ' of ' + p.e + ' days'; },
+      'da.travelOn': '100% days counted', 'da.travelOff': 'Only ON counted',
+      'da.payWith': 'paid with the {p} salary', 'da.payOut': 'outside the app\'s year range',
+      'da.over': function (p) { return '<b>' + p.x + ' ' + dw(p.n) + '</b> over, extra pay due.'; },
+      'da.noAnnual': 'Enter your annual salary to calculate the extra pay.',
+      'da.exact': function (p) { return 'Exactly <b>' + p.e + ' days</b>. No extra days.'; },
+      'da.under': function (p) { return '<b>' + p.x + ' ' + dw(p.n) + '</b> short of ' + p.e + '. No extra pay yet.'; },
+      'da.need': function (p) { return p.n + ' more work ' + dw(p.n) + ' needed to go over.'; },
+      'da.notOver': function (p) { return p.y + ' is not over yet. These figures use the days marked so far' + (p.n ? ', including ' + p.n + ' planned ' + dw(p.n) + ' after today' : '') + '.'; },
+      'da.openSlip': 'Open {p} slip',
+      'ym.saved': '✓ Saved', 'ym.changed': 'Changed, not saved again', 'ym.none': 'Not saved', 'ym.empty': 'Empty',
+      'tot.empty': 'No saved months in {y} yet. Save months from the Month tab.',
+      'tot.net': 'Total net pay', 'tot.gross': 'Gross pay', 'tot.ded': 'Insurance + pension', 'tot.da': 'Day Account paid',
+      'tot.note': function (p) { return 'From ' + p.n + ' saved ' + (p.n === 1 ? 'month' : 'months') + ', grouped ' + (p.pay ? 'by pay month' : 'by work period') + '.'; },
+      'rg.title': 'Fill a date range', 'rg.type': 'Type',
+      'rg.optOn': 'ON (+ travel at start/end)', 'rg.optTon': 'All Travel ON', 'rg.optToff': 'All Travel OFF', 'rg.optVisa': 'All Visa day', 'rg.optMed': 'All Medical day', 'rg.optOff': 'OFF (clear)',
+      'rg.prevAll': function (p) { return p.n + ' ' + dw(p.n) + ' ' + p.type; },
+      'rg.ton': 'Travel ON at start', 'rg.toff': 'Travel OFF at end',
+      'rg.nDays': function (p) { return p.n + ' ' + dw(p.n); },
+      'rg.note': 'A range can span several months. Travel ON = travelling out, Travel OFF = travelling home.',
+      'rg.prevOff': function (p) { return p.n + ' ' + dw(p.n) + ' set to OFF'; },
+      'rg.prevTon': function (p) { return p.n + ' ' + dw(p.n) + ' Travel ON'; },
+      'rg.prevToff': function (p) { return p.n + ' ' + dw(p.n) + ' Travel OFF'; },
+      'rg.prevOn': function (p) { return p.n + ' ' + dw(p.n) + ': ' + p.parts; },
+      'rg.done': function (p) { return p.n + ' ' + dw(p.n) + ' updated (' + p.where + ')'; },
+      'rg.months': '{n} months',
+      'btn.cancel': 'Cancel', 'btn.apply': 'Apply',
+      'cl.already': 'All days this month are already OFF.', 'cl.title': 'Clear {p}?',
+      'cl.text': function (p) { return p.n + ' ON/Travel ' + dw(p.n) + ' this month will be set to OFF.'; }, 'cl.btn': 'Clear', 'cl.done': '{p} cleared.',
+      'per.out': 'Outside the supported years (2000–2100).',
+      'err.fix': 'Fix the fields marked in red first.', 'err.annual': 'Enter your annual salary first.',
+      'sv.already': 'Already saved.', 'sv.title': 'Overwrite history for {p}?',
+      'sv.daText': 'Work days in other months changed, so the Annual Day Account on this slip changed too. Save the latest version?',
+      'sv.text': 'The saved version will be replaced with the current calculation.', 'sv.btn': 'Overwrite', 'sv.done': 'Saved to history: {p}',
+      'rv.title': 'Restore {p}?', 'rv.text': 'The calendar, fixed pay, claims and slopchest for this month go back to the version saved in history.', 'rv.btn': 'Restore', 'rv.done': 'Restored the saved version.',
+      'dh.title': 'Delete history for {p}?', 'dh.text': 'Only the history is deleted. The calendar days, claims and slopchest for that month stay.', 'dh.btn': 'Delete', 'dh.done': 'History for {p} deleted.',
+      'ex.order': '"From" must be on or before "To".',
+      'ex.none': 'No saved months in this range. Save the monthly calculations in the Month tab first.',
+      'ex.count': function (p) { return '<b>' + p.n + '</b> of ' + p.m + ' months in the range are saved and will be in the PDF.'; },
+      'ex.missing': 'Not saved (not in the PDF): {l}',
+      'ex.changed': function (p) { return p.n + (p.n === 1 ? ' month has' : ' months have') + ' unsaved changes (' + p.l + '). The PDF uses the saved version.'; },
+      'list.more': ' and {n} more',
+      'ex.noSaved': 'No saved history in this range.', 'ex.done': 'PDF created: {n}', 'ex.fail': 'Could not create the PDF. ', 'ex.noHist': 'No history yet.',
+      'bk.done': 'Backup created.', 'rs.big': 'File too large (max 5 MB).', 'rs.json': 'The file is not valid JSON.', 'rs.notOurs': 'This file is not a Gaji Rotasi backup.',
+      'rs.read': 'The file could not be read.', 'rs.title': 'Restore backup?',
+      'rs.text': function (p) { return 'The backup has ' + p.h + (p.h === 1 ? ' month' : ' months') + ' of history and ' + p.d + ' ON/Travel ' + dw(p.d) + (p.x ? ' (' + p.x + ' invalid ' + (p.x === 1 ? 'entry' : 'entries') + ' will be skipped)' : '') + '. All data on this device will be replaced.'; },
+      'rs.btn': 'Restore', 'rs.done': 'Backup restored.', 'rs.fail': 'Could not restore the backup.',
+      'wp.title': 'Delete all data?', 'wp.text': 'The calendar, claims, slopchest, fixed pay, Day Account rules and all history will be deleted from this device. Download a backup first.',
+      'wp.btn': 'Delete all', 'wp.done': 'All data deleted.',
+      'sto.corrupt': 'Saved data is damaged and cannot be read. A copy was set aside and the app starts with empty data.',
+      'sto.dropped': function (p) { return p.n + ' invalid data ' + (p.n === 1 ? 'entry was' : 'entries were') + ' skipped.'; },
+      'sto.blocked': 'Device storage cannot be accessed. Data only lasts while the app is open.',
+      'sto.fail': 'Could not save to the device (storage full or blocked). Changes are not stored permanently.'
+    }
+  };
+  let lang = 'id';
+  function t(key, p) {
+    const tbl = STR[lang] || STR.id;
+    let v = tbl[key];
+    if (v === undefined) v = STR.id[key];
+    if (v === undefined) return key;
+    if (typeof v === 'function') return v(p || {});
+    return p ? v.replace(/\{(\w+)\}/g, function (m, k) { return p[k] != null ? p[k] : m; }) : v;
+  }
+  function applyStatic() {
+    document.documentElement.lang = lang;
+    document.querySelectorAll('[data-i18n]').forEach(function (el) { el.textContent = t(el.dataset.i18n); });
+    document.querySelectorAll('[data-i18n-html]').forEach(function (el) { el.innerHTML = t(el.dataset.i18nHtml); });
+    document.querySelectorAll('[data-i18n-ph]').forEach(function (el) { el.placeholder = t(el.dataset.i18nPh); });
+    document.querySelectorAll('[data-i18n-aria]').forEach(function (el) { el.setAttribute('aria-label', t(el.dataset.i18nAria)); });
+    document.querySelectorAll('#langSwitch button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.lang === lang)); });
+    $('inDaPayMonth').innerHTML = C.MONTHS.map(function (m, i) { return '<option value="' + (i + 1) + '">' + m + '</option>'; }).join('');
+    $('inDaPayMonth').value = String(S.settings.daPayMonth);
+  }
+  function detectLang(hadStored) {
+    if (S.ui.lang === 'id' || S.ui.lang === 'en') return S.ui.lang;
+    if (hadStored) return 'id';
+    const n = (navigator.languages && navigator.languages[0]) || navigator.language || '';
+    return /^id\b/i.test(n) ? 'id' : 'en';
+  }
+  function useLang(l) {
+    lang = l === 'en' ? 'en' : 'id';
+    C.setLang(lang);
+    S.ui.lang = lang;
+  }
 
   let S = C.emptyState();
   const view = {
@@ -1506,20 +1969,23 @@ var App = (function () {
   const busy = {};
   const stamps = {};
   let lastTap = { k: null, t: 0 };
+  let hadStored = false;
   const CFG = {
     annual: { id: 'inAnnual', err: 'errAnnual', box: 'fAnnual', kind: 'annual' },
     insurance: { id: 'inInsurance', err: 'errInsurance', box: 'fInsurance', kind: 'ded' },
     pension: { id: 'inPension', err: 'errPension', box: 'fPension', kind: 'ded' }
   };
   const LEDGER = {
-    claim: { store: 'claims', list: 'claimList', desc: 'inClaimDesc', amt: 'inClaimAmt', btn: 'btnAddClaim', err: 'errClaim', hint: 'claimHint', def: 'Claim expenses', added: 'Claim ditambahkan.' },
-    slop: { store: 'slop', list: 'slopList', desc: 'inSlopDesc', amt: 'inSlopAmt', btn: 'btnAddSlop', err: 'errSlop', hint: 'slopHint', def: 'Slopchest', added: 'Slopchest ditambahkan.' }
+    claim: { store: 'claims', list: 'claimList', desc: 'inClaimDesc', amt: 'inClaimAmt', btn: 'btnAddClaim', err: 'errClaim', hint: 'claimHint', def: 'Claim expenses', added: 'claim.added' },
+    slop: { store: 'slop', list: 'slopList', desc: 'inSlopDesc', amt: 'inSlopAmt', btn: 'btnAddSlop', err: 'errSlop', hint: 'slopHint', def: 'Slopchest', added: 'slop.added' }
   };
   const DA_RULE = {
     expected: { id: 'inDaExpected', err: 'errDaExpected', box: 'fDaExpected', key: 'daExpected' },
     rate: { id: 'inDaRate', err: 'errDaRate', box: 'fDaRate', key: 'daRate' }
   };
 
+  const DAY_CLASS = { ON: 'on', TON: 'ton', TOFF: 'toff', VISA: 'visa', MED: 'med' };
+  const DAY_SUB = { TON: 'T-ON', TOFF: 'T-OFF', VISA: 'VISA', MED: 'MED' };
   function locked(name, ms) { const now = Date.now(); if (stamps[name] && now - stamps[name] < ms) return true; stamps[name] = now; return false; }
   function nowPeriod() { const d = new Date(); return C.pkey(d.getFullYear(), d.getMonth() + 1); }
   function today() { const d = new Date(); return C.ymd(d.getFullYear(), d.getMonth() + 1, d.getDate()); }
@@ -1534,33 +2000,37 @@ var App = (function () {
     catch (e) {
       try { localStorage.setItem(KEY + '.corrupt', raw); } catch (e2) { /* ignore */ }
       S = C.emptyState();
-      if (!quiet) toast('Data tersimpan rusak dan tidak bisa dibaca. Salinannya disisihkan; aplikasi mulai dari data kosong.', 'err', 7000);
+      if (!quiet) toastLater('sto.corrupt', null, 'err', 7000);
       return;
     }
     const r = C.sanitizeState(parsed);
     S = r.state;
-    if (r.dropped > 0 && !quiet) toast(r.dropped + ' entri data tidak valid diabaikan.', 'warn', 5000);
+    if (r.dropped > 0 && !quiet) toastLater('sto.dropped', { n: r.dropped }, 'warn', 5000);
   }
+  // pesan saat memuat ditampilkan setelah bahasa ditentukan
+  let pendingToast = null;
+  function toastLater(key, p, kind, ms) { pendingToast = [key, p, kind, ms]; }
   function load() {
     let raw = null;
     try { raw = localStorage.getItem(KEY); }
-    catch (e) { toast('Penyimpanan perangkat tidak bisa diakses. Data hanya bertahan selama aplikasi terbuka.', 'err', 7000); return; }
+    catch (e) { toastLater('sto.blocked', null, 'err', 7000); return; }
+    hadStored = raw != null;
     loadFromRaw(raw, false);
   }
   function persist() {
     try { localStorage.setItem(KEY, JSON.stringify(S)); return true; }
-    catch (e) { toast('Gagal menyimpan ke perangkat (penyimpanan penuh atau diblokir). Perubahan belum tersimpan permanen.', 'err', 6000); return false; }
+    catch (e) { toast(t('sto.fail'), 'err', 6000); return false; }
   }
 
   /* ----- toast & modal ----- */
   let toastTimer = null;
   function toast(msg, kind, ms) {
-    const t = $('toast');
-    if (!t) return;
-    t.textContent = msg;
-    t.className = 'toast show' + (kind ? ' ' + kind : '');
+    const el = $('toast');
+    if (!el) return;
+    el.textContent = msg;
+    el.className = 'toast show' + (kind ? ' ' + kind : '');
     clearTimeout(toastTimer);
-    toastTimer = setTimeout(function () { t.className = 'toast'; }, ms || 2800);
+    toastTimer = setTimeout(function () { el.className = 'toast'; }, ms || 2800);
   }
   let modal = null;
   let clickShieldUntil = 0;
@@ -1619,7 +2089,7 @@ var App = (function () {
     });
   }
   function confirmModal(title, text, okLabel, danger) {
-    return openModal({ title: title, body: text, buttons: [{ label: 'Batal', value: false }, { label: okLabel, value: true, kind: danger ? 'danger' : 'primary' }] })
+    return openModal({ title: title, body: text, buttons: [{ label: t('btn.cancel'), value: false }, { label: okLabel, value: true, kind: danger ? 'danger' : 'primary' }] })
       .then(function (v) { return v === true; });
   }
 
@@ -1651,7 +2121,7 @@ var App = (function () {
     return new Promise(function (resolve, reject) {
       const fr = new FileReader();
       fr.onload = function () { resolve(String(fr.result)); };
-      fr.onerror = function () { reject(new Error('File tidak bisa dibaca.')); };
+      fr.onerror = function () { reject(new Error(t('rs.read'))); };
       fr.readAsText(f);
     });
   }
@@ -1663,21 +2133,23 @@ var App = (function () {
   }
   function daSub(da) {
     return da.excess > 0
-      ? 'Lebih ' + C.fmtDays(da.excess) + ' hari × ' + C.fmtDays(da.rate) + '% × $' + C.fmtNum(da.dr, 4)
-      : 'Tidak ada kelebihan (' + C.fmtDays(da.counted) + ' dari ' + C.fmtDays(da.expected) + ' hari)';
+      ? t('sl.daOver', { x: C.fmtDays(da.excess), n: da.excess, rate: C.fmtDays(da.rate), dr: '$' + C.fmtNum(da.dr, 4) })
+      : t('sl.daNone', { c: C.fmtDays(da.counted), e: C.fmtDays(da.expected) });
   }
   function slipRows(r) {
     let h = lnRow('Guarantee', '70% × annual ÷ 12', C.fmtMoney(r.guarantee));
-    h += lnRow('Tambahan ON', r.on + ' hari × $' + C.fmtNum(r.onAdd, 4), C.fmtMoney(r.onPay));
-    h += lnRow('Tambahan Travel ON', r.ton + ' hari × $' + C.fmtNum(r.trvAdd, 4), C.fmtMoney(r.tonPay));
-    h += lnRow('Tambahan Travel OFF', r.toff + ' hari × $' + C.fmtNum(r.trvAdd, 4), C.fmtMoney(r.toffPay));
+    h += lnRow(t('sl.on'), t('sl.days', { n: r.on, r: '$' + C.fmtNum(r.onAdd, 4) }), C.fmtMoney(r.onPay));
+    h += lnRow(t('sl.ton'), t('sl.days', { n: r.ton, r: '$' + C.fmtNum(r.trvAdd, 4) }), C.fmtMoney(r.tonPay));
+    h += lnRow(t('sl.toff'), t('sl.days', { n: r.toff, r: '$' + C.fmtNum(r.trvAdd, 4) }), C.fmtMoney(r.toffPay));
+    if (r.visa) h += lnRow(t('sl.visa'), t('sl.days', { n: r.visa, r: '$' + C.fmtNum(r.trvAdd, 4) }), C.fmtMoney(r.visaPay));
+    if (r.med) h += lnRow(t('sl.med'), t('sl.days', { n: r.med, r: '$' + C.fmtNum(r.trvAdd, 4) }), C.fmtMoney(r.medPay));
     if (r.da) h += lnRow('Annual Day Account ' + r.da.year, daSub(r.da), (r.da.amount > 0 ? '+' : '') + C.fmtMoney(r.da.amount), 'da' + (r.da.amount > 0 ? '' : ' zero'));
-    h += lnRow('Gaji kotor', '', C.fmtMoney(r.gross), 'sub');
-    h += lnRow('Asuransi', '', minusMoney(r.insurance), 'neg');
+    h += lnRow(t('sl.gross'), '', C.fmtMoney(r.gross), 'sub');
+    h += lnRow(t('sl.ins'), '', minusMoney(r.insurance), 'neg');
     h += lnRow('Pension plan', '', minusMoney(r.pension), 'neg');
     h += lnRow('Slopchest' + (r.slop.length ? ' (' + r.slop.length + ')' : ''), '', minusMoney(r.slopTotal), 'neg');
     h += lnRow('Claim expenses' + (r.claims.length ? ' (' + r.claims.length + ')' : ''), '', (r.claimsTotal > 0 ? '+' : '') + C.fmtMoney(r.claimsTotal), 'pos');
-    h += lnRow('Diterima', '', C.fmtMoney(r.net), 'total');
+    h += lnRow(t('sl.net'), '', C.fmtMoney(r.net), 'total');
     return h;
   }
   function gaugeHtml(a) {
@@ -1685,7 +2157,7 @@ var App = (function () {
     const fill = Math.min(a.counted, a.expected) / max * 100;
     const over = a.counted > a.expected ? (a.counted - a.expected) / max * 100 : 0;
     const mark = a.expected / max * 100;
-    return '<div class="gauge" role="img" aria-label="' + C.fmtDays(a.counted) + ' dari ' + C.fmtDays(a.expected) + ' hari">' +
+    return '<div class="gauge" role="img" aria-label="' + esc(t('da.gaugeAria', { c: C.fmtDays(a.counted), e: C.fmtDays(a.expected) })) + '">' +
       '<span class="fill" style="width:' + fill.toFixed(2) + '%"></span>' +
       (over ? '<span class="over" style="left:' + fill.toFixed(2) + '%;width:' + over.toFixed(2) + '%"></span>' : '') +
       '<span class="mark" style="left:' + mark.toFixed(2) + '%"></span></div>';
@@ -1715,14 +2187,14 @@ var App = (function () {
     const open = view.cfgOpen || anyCfgErr() || !(cfg.annual > 0);
     $('cfgForm').hidden = !open;
     $('cfgSummary').hidden = open;
-    $('cfgHint').textContent = !cfg.from ? 'Belum diisi' : cfg.inherited ? 'Memakai pengaturan ' + C.periodShort(cfg.from) : 'Diatur di bulan ini';
+    $('cfgHint').textContent = !cfg.from ? t('cfg.unset') : cfg.inherited ? t('cfg.from', { p: C.periodShort(cfg.from) }) : t('cfg.own');
     const derived = cfg.annual > 0
-      ? 'Daily rate <b>' + C.fmtMoney(cfg.annual / 365) + '</b>, guarantee <b>' + C.fmtMoney(C.RATES.OFF * cfg.annual / 12) + '</b> per bulan'
-      : 'Isi gaji tahunan untuk menghitung daily rate dan guarantee.';
+      ? t('cfg.derived', { dr: C.fmtMoney(cfg.annual / 365), g: C.fmtMoney(C.RATES.OFF * cfg.annual / 12) })
+      : t('cfg.derivedEmpty');
     $('derived').innerHTML = derived;
     $('derivedSum').innerHTML = derived;
     const short = function (v) { return '$' + C.fmtInput(v); };
-    $('cfgSumGrid').innerHTML = '<div><small>Annual</small><b>' + short(cfg.annual) + '</b></div><div><small>Asuransi/bln</small><b>' + short(cfg.insurance) + '</b></div><div><small>Pension/bln</small><b>' + short(cfg.pension) + '</b></div>';
+    $('cfgSumGrid').innerHTML = '<div><small>' + t('cfg.sumAnnual') + '</small><b>' + short(cfg.annual) + '</b></div><div><small>' + t('cfg.sumIns') + '</small><b>' + short(cfg.insurance) + '</b></div><div><small>' + t('cfg.sumPen') + '</small><b>' + short(cfg.pension) + '</b></div>';
     $('btnCfgDone').disabled = !(cfg.annual > 0);
   }
   function renderBrush() {
@@ -1735,67 +2207,70 @@ var App = (function () {
     const td = today();
     let html = '';
     for (let i = 0; i < lead; i++) html += '<span></span>';
-    let on = 0, ton = 0, toff = 0;
+    const cnt = { ON: 0, TON: 0, TOFF: 0, VISA: 0, MED: 0 };
     for (let d = 1; d <= dim; d++) {
       const k = C.ymd(q.y, q.m, d);
       const v = S.days[k];
-      if (v === 'ON') on++; else if (v === 'TON') ton++; else if (v === 'TOFF') toff++;
-      const cls = v === 'ON' ? 'on' : v === 'TON' ? 'ton' : v === 'TOFF' ? 'toff' : 'off';
+      if (cnt[v] != null) cnt[v]++;
+      const cls = DAY_CLASS[v] || 'off';
       const label = d + ' ' + C.MONTHS_S[q.m - 1] + ': ' + C.TYPE_LABEL[v || 'OFF'];
-      const sub = v === 'TON' ? '<i>T-ON</i>' : v === 'TOFF' ? '<i>T-OFF</i>' : '';
+      const sub = DAY_SUB[v] ? '<i>' + DAY_SUB[v] + '</i>' : '';
       html += '<button type="button" class="cal-day ' + cls + (k === td ? ' today' : '') + '" data-date="' + k + '" aria-label="' + label + '"><span>' + d + '</span>' + sub + '</button>';
     }
     $('calGrid').innerHTML = html;
-    $('calCounts').innerHTML = '<span class="chip on">ON ' + on + '</span><span class="chip ton">Travel ON ' + ton + '</span><span class="chip toff">Travel OFF ' + toff + '</span><span class="chip off">OFF ' + (dim - on - ton - toff) + '</span>';
+    const used = cnt.ON + cnt.TON + cnt.TOFF + cnt.VISA + cnt.MED;
+    $('calCounts').innerHTML = '<span class="chip on">ON ' + cnt.ON + '</span><span class="chip ton">Travel ON ' + cnt.TON + '</span><span class="chip toff">Travel OFF ' + cnt.TOFF + '</span>' +
+      (cnt.VISA ? '<span class="chip visa">Visa ' + cnt.VISA + '</span>' : '') + (cnt.MED ? '<span class="chip med">Medical ' + cnt.MED + '</span>' : '') +
+      '<span class="chip off">OFF ' + (dim - used) + '</span>';
   }
   function renderLedger(kind) {
     const L = LEDGER[kind];
     const list = (S[L.store] || {})[view.period] || [];
     $(L.list).innerHTML = list.map(function (c) {
-      return '<li><span class="d">' + esc(c.desc) + '</span><span class="a">' + (kind === 'claim' ? '+' : '−') + C.fmtMoney(c.amount) + '</span><button type="button" class="x-btn" data-id="' + esc(c.id) + '" aria-label="Hapus ' + esc(c.desc) + '">×</button></li>';
+      return '<li><span class="d">' + esc(c.desc) + '</span><span class="a">' + (kind === 'claim' ? '+' : '−') + C.fmtMoney(c.amount) + '</span><button type="button" class="x-btn" data-id="' + esc(c.id) + '" aria-label="' + esc(t('led.del', { d: c.desc })) + '">×</button></li>';
     }).join('');
     const total = C.round2(list.reduce(function (s, c) { return s + c.amount; }, 0));
-    $(L.hint).textContent = list.length ? list.length + ' item, ' + C.fmtMoney(total) : 'Belum ada';
+    $(L.hint).textContent = list.length ? t('led.count', { n: list.length, total: C.fmtMoney(total) }) : t('led.none');
   }
   function renderResult() {
     const inp = C.liveInputs(S, view.period);
     const box = $('resultCard');
-    if (!(inp.annual > 0)) { box.innerHTML = '<div class="empty">Isi <b>gaji tahunan</b> di langkah 1 untuk melihat rincian bulan ini.</div>'; return; }
+    if (!(inp.annual > 0)) { box.innerHTML = '<div class="empty">' + t('res.empty') + '</div>'; return; }
     const r = C.calc(inp);
     let h = '';
-    if (anyCfgErr()) h += '<p class="banner warn">Ada input yang belum valid. Hasil di bawah memakai nilai terakhir yang valid.</p>';
-    h += '<div class="slip"><div class="slip-hero"><div><div class="lbl">Diterima, dibayar ' + esc(C.periodLabel(r.payPeriod)) + '</div><div class="big" id="netValue">' + C.fmtMoney(r.net) + '</div></div><div class="side">Gaji kotor<b id="grossValue">' + C.fmtMoney(r.gross) + '</b></div></div>';
+    if (anyCfgErr()) h += '<p class="banner warn">' + t('res.invalid') + '</p>';
+    h += '<div class="slip"><div class="slip-hero"><div><div class="lbl">' + esc(t('res.net', { p: C.periodLabel(r.payPeriod) })) + '</div><div class="big" id="netValue">' + C.fmtMoney(r.net) + '</div></div><div class="side">' + t('res.gross') + '<b id="grossValue">' + C.fmtMoney(r.gross) + '</b></div></div>';
     h += slipRows(r) + '</div>';
     box.innerHTML = h;
   }
   function daVerdictShort(a) {
-    if (a.diff > 0) return 'Lebih ' + C.fmtDays(a.excess) + ' hari, ada tambahan gaji';
-    if (a.diff === 0) return 'Tepat ' + C.fmtDays(a.expected) + ' hari, tidak ada kelebihan';
-    return 'Kurang ' + C.fmtDays(a.short) + ' hari untuk mencapai ' + C.fmtDays(a.expected);
+    if (a.diff > 0) return t('da.shortOver', { x: C.fmtDays(a.excess), n: a.excess });
+    if (a.diff === 0) return t('da.shortExact', { e: C.fmtDays(a.expected) });
+    return t('da.shortUnder', { x: C.fmtDays(a.short), n: a.short, e: C.fmtDays(a.expected) });
   }
   function renderDaMini() {
     const y = yearOf(view.period);
     const a = C.yearAccount(S, y);
-    $('daMini').innerHTML = '<div class="top"><h3>Annual Day Account ' + y + '</h3><span class="go">Lihat tahun</span></div>' +
-      gaugeHtml(a) + '<p><b>' + C.fmtDays(a.counted) + '</b> dari ' + C.fmtDays(a.expected) + ' hari. ' + esc(daVerdictShort(a)) + '.</p>';
+    $('daMini').innerHTML = '<div class="top"><h3>Annual Day Account ' + y + '</h3><span class="go">' + t('da.view') + '</span></div>' +
+      gaugeHtml(a) + '<p>' + t('da.mini', { c: C.fmtDays(a.counted), e: C.fmtDays(a.expected), v: esc(daVerdictShort(a)) }) + '</p>';
   }
   function renderStatus() {
     const info = C.statusInfo(S, view.period);
     const st = info.status;
     const b = $('statusBadge');
     b.className = 'badge ' + st;
-    b.textContent = st === 'saved' ? '✓ Tersimpan di riwayat' : st === 'changed' ? (info.daOnly ? 'Day Account berubah, simpan ulang' : 'Berubah sejak disimpan') : 'Belum disimpan';
+    b.textContent = st === 'saved' ? t('st.saved') : st === 'changed' ? (info.daOnly ? t('st.daChanged') : t('st.changed')) : t('st.none');
     const inp = C.liveInputs(S, view.period);
     const btn = $('btnSave');
-    btn.textContent = st === 'changed' ? 'Simpan perubahan' : st === 'saved' ? '✓ Tersimpan' : 'Simpan';
+    btn.textContent = st === 'changed' ? t('save.changed') : st === 'saved' ? t('save.done') : t('save.new');
     btn.disabled = anyCfgErr() || !(inp.annual > 0) || st === 'saved';
     $('btnRevert').hidden = !(st === 'changed' && !info.daOnly);
     $('btnDelHist').hidden = st === 'none';
     if (inp.annual > 0) {
-      $('sbLabel').textContent = 'Diterima, dibayar ' + C.periodShort(C.addMonths(view.period, 1));
+      $('sbLabel').textContent = t('sb.net', { p: C.periodShort(C.addMonths(view.period, 1)) });
       $('sbNet').textContent = C.fmtMoney(C.calc(inp).net);
     } else {
-      $('sbLabel').textContent = 'Isi gaji tahunan dulu';
+      $('sbLabel').textContent = t('sb.empty');
       $('sbNet').textContent = '–';
     }
   }
@@ -1803,7 +2278,7 @@ var App = (function () {
   function renderBulan(force) {
     const p = view.period;
     $('periodTitle').textContent = C.periodLabel(p);
-    $('periodSub').textContent = 'Gaji dibayar ' + C.periodLabel(C.addMonths(p, 1));
+    $('periodSub').textContent = t('mon.paid', { p: C.periodLabel(C.addMonths(p, 1)) });
     $('goThisMonth').hidden = p === nowPeriod();
     if (force) { clearCfgErrs(); view.cfgOpen = !(C.cfgFor(S, p).annual > 0); $('welcome').hidden = Object.keys(S.months).length > 0; }
     renderInputs(force);
@@ -1815,7 +2290,7 @@ var App = (function () {
     refreshBulan();
   }
   function setPeriod(p) {
-    if (!C.parsePeriod(p)) { toast('Di luar rentang tahun yang didukung (2000–2100).', 'warn'); return; }
+    if (!C.parsePeriod(p)) { toast(t('per.out'), 'warn'); return; }
     view.period = p;
     S.ui.period = p;
     persist();
@@ -1850,8 +2325,8 @@ var App = (function () {
     el.value = field === 'annual' ? (v > 0 ? C.fmtInput(v) : '') : (cfg.from ? C.fmtInput(v) : '');
   }
   function cfgDone() {
-    if (anyCfgErr()) { toast('Perbaiki input yang ditandai merah dulu.', 'warn'); return; }
-    if (!(C.cfgFor(S, view.period).annual > 0)) { toast('Isi gaji tahunan dulu.', 'warn'); return; }
+    if (anyCfgErr()) { toast(t('err.fix'), 'warn'); return; }
+    if (!(C.cfgFor(S, view.period).annual > 0)) { toast(t('err.annual'), 'warn'); return; }
     view.cfgOpen = false;
     renderCfgBox();
   }
@@ -1885,14 +2360,14 @@ var App = (function () {
     const q = C.parsePeriod(view.period);
     const wrap = document.createElement('div');
     let dayOpts = '';
-    for (let i = 0; i <= C.LIMITS.travelMax; i++) dayOpts += '<option value="' + i + '">' + i + ' hari</option>';
+    for (let i = 0; i <= C.LIMITS.travelMax; i++) dayOpts += '<option value="' + i + '">' + esc(t('rg.nDays', { n: i })) + '</option>';
     wrap.innerHTML =
-      '<div class="grid2"><label class="field"><span>Dari</span><input type="date" id="rgFrom" min="2000-01-01" max="2100-12-31"></label>' +
-      '<label class="field"><span>Sampai</span><input type="date" id="rgTo" min="2000-01-01" max="2100-12-31"></label></div>' +
-      '<label class="field"><span>Jenis</span><select id="rgType"><option value="ON">ON (+ travel di awal/akhir)</option><option value="TON">Travel ON semua</option><option value="TOFF">Travel OFF semua</option><option value="OFF">OFF (kosongkan)</option></select></label>' +
-      '<div class="grid2" id="rgTravelOpts"><label class="field"><span>Travel ON di awal</span><select id="rgTon">' + dayOpts + '</select></label>' +
-      '<label class="field"><span>Travel OFF di akhir</span><select id="rgToff">' + dayOpts + '</select></label></div>' +
-      '<p class="preview" id="rgPreview"></p><p class="tiny">Rentang boleh melewati beberapa bulan. Travel ON = hari berangkat, Travel OFF = hari pulang.</p>';
+      '<div class="grid2"><label class="field"><span>' + t('ex.from') + '</span><input type="date" id="rgFrom" min="2000-01-01" max="2100-12-31"></label>' +
+      '<label class="field"><span>' + t('ex.to') + '</span><input type="date" id="rgTo" min="2000-01-01" max="2100-12-31"></label></div>' +
+      '<label class="field"><span>' + t('rg.type') + '</span><select id="rgType"><option value="ON">' + esc(t('rg.optOn')) + '</option><option value="TON">' + esc(t('rg.optTon')) + '</option><option value="TOFF">' + esc(t('rg.optToff')) + '</option><option value="VISA">' + esc(t('rg.optVisa')) + '</option><option value="MED">' + esc(t('rg.optMed')) + '</option><option value="OFF">' + esc(t('rg.optOff')) + '</option></select></label>' +
+      '<div class="grid2" id="rgTravelOpts"><label class="field"><span>' + t('rg.ton') + '</span><select id="rgTon">' + dayOpts + '</select></label>' +
+      '<label class="field"><span>' + t('rg.toff') + '</span><select id="rgToff">' + dayOpts + '</select></label></div>' +
+      '<p class="preview" id="rgPreview"></p><p class="tiny">' + t('rg.note') + '</p>';
     const fromEl = wrap.querySelector('#rgFrom'), toEl = wrap.querySelector('#rgTo'), typeEl = wrap.querySelector('#rgType');
     const tonEl = wrap.querySelector('#rgTon'), toffEl = wrap.querySelector('#rgToff'), prevEl = wrap.querySelector('#rgPreview'), optsEl = wrap.querySelector('#rgTravelOpts');
     fromEl.value = C.ymd(q.y, q.m, 1);
@@ -1913,10 +2388,11 @@ var App = (function () {
       else {
         const span = info.periods.length === 1 ? C.periodShort(info.periods[0]) : C.periodShort(info.periods[0]) + ' – ' + C.periodShort(info.periods[info.periods.length - 1]);
         let what;
-        if (v.type === 'OFF') what = info.n + ' hari dijadikan OFF';
-        else if (v.type === 'TON') what = info.n + ' hari Travel ON';
-        else if (v.type === 'TOFF') what = info.n + ' hari Travel OFF';
-        else what = info.n + ' hari: ' + [info.ton ? info.ton + ' Travel ON' : '', info.on ? info.on + ' ON' : '', info.toff ? info.toff + ' Travel OFF' : ''].filter(Boolean).join(' + ');
+        if (v.type === 'OFF') what = t('rg.prevOff', { n: info.n });
+        else if (v.type === 'TON') what = t('rg.prevTon', { n: info.n });
+        else if (v.type === 'TOFF') what = t('rg.prevToff', { n: info.n });
+        else if (v.type === 'VISA' || v.type === 'MED') what = t('rg.prevAll', { n: info.n, type: C.TYPE_LABEL[v.type] });
+        else what = t('rg.prevOn', { n: info.n, parts: [info.ton ? info.ton + ' Travel ON' : '', info.on ? info.on + ' ON' : '', info.toff ? info.toff + ' Travel OFF' : ''].filter(Boolean).join(' + ') });
         prevEl.textContent = what + ', ' + span;
       }
       return info;
@@ -1924,8 +2400,8 @@ var App = (function () {
     [fromEl, toEl, typeEl, tonEl, toffEl].forEach(function (el) { el.addEventListener('input', upd); el.addEventListener('change', upd); });
     upd();
     openModal({
-      title: 'Isi rentang tanggal', body: wrap,
-      buttons: [{ label: 'Batal', value: null }, { label: 'Terapkan', value: 'apply', kind: 'primary' }],
+      title: t('rg.title'), body: wrap,
+      buttons: [{ label: t('btn.cancel'), value: null }, { label: t('btn.apply'), value: 'apply', kind: 'primary' }],
       onButton: function (v) { if (v !== 'apply') return true; return upd().ok; }
     }).then(function (res) {
       if (res !== 'apply') return;
@@ -1935,21 +2411,21 @@ var App = (function () {
       if (v.type === 'ON') { S.ui.rangeTon = v.opt.tonDays; S.ui.rangeToff = v.opt.toffDays; }
       persist();
       renderCalendar(); refreshBulan();
-      toast(info.n + ' hari diperbarui (' + (info.periods.length > 3 ? info.periods.length + ' bulan' : info.periods.map(C.periodShort).join(', ')) + ')', 'ok');
+      toast(t('rg.done', { n: info.n, where: info.periods.length > 3 ? t('rg.months', { n: info.periods.length }) : info.periods.map(C.periodShort).join(', ') }), 'ok');
     });
   }
   function clearMonth() {
     if (isModalOpen()) return;
     const p = view.period;
     const d = C.daysOf(S.days, p);
-    const n = d.on.length + d.ton.length + d.toff.length;
-    if (!n) { toast('Semua tanggal bulan ini sudah OFF.'); return; }
-    confirmModal('Kosongkan ' + C.periodLabel(p) + '?', n + ' tanggal ON/Travel di bulan ini akan dijadikan OFF.', 'Kosongkan', true).then(function (ok) {
+    const n = d.on.length + d.ton.length + d.toff.length + d.visa.length + d.med.length;
+    if (!n) { toast(t('cl.already')); return; }
+    confirmModal(t('cl.title', { p: C.periodLabel(p) }), t('cl.text', { n: n }), t('cl.btn'), true).then(function (ok) {
       if (!ok) return;
       C.clearPeriod(S.days, p);
       persist();
       if (view.period === p) { renderCalendar(); refreshBulan(); }
-      toast(C.periodLabel(p) + ' dikosongkan.', 'ok');
+      toast(t('cl.done', { p: C.periodLabel(p) }), 'ok');
     });
   }
   function addItem(kind) {
@@ -1960,7 +2436,7 @@ var App = (function () {
     if (!r.ok) { $(L.err).textContent = r.error; return; }
     if (!S[L.store]) S[L.store] = {};
     const list = S[L.store][view.period] || [];
-    if (list.length >= C.LIMITS.claimsPerPeriod) { $(L.err).textContent = 'Maksimal ' + C.LIMITS.claimsPerPeriod + ' item per bulan.'; return; }
+    if (list.length >= C.LIMITS.claimsPerPeriod) { $(L.err).textContent = t('led.max', { n: C.LIMITS.claimsPerPeriod }); return; }
     const desc = descEl.value.replace(/[\u0000-\u001f\u007f]/g, ' ').trim().slice(0, C.LIMITS.descMax) || L.def;
     list.push({ id: C.newId(), desc: desc, amount: r.value });
     S[L.store][view.period] = list;
@@ -1968,7 +2444,7 @@ var App = (function () {
     descEl.value = ''; amtEl.value = '';
     $(L.err).textContent = '';
     renderLedger(kind); refreshBulan();
-    toast(L.added, 'ok', 1600);
+    toast(t(L.added), 'ok', 1600);
   }
   function deleteItem(kind, id) {
     // double-tap: setelah item terhapus, item berikutnya bergeser ke posisi yang sama — abaikan tap kedua
@@ -1985,16 +2461,14 @@ var App = (function () {
   function saveHistory() {
     if (busy.save) return;
     const p = view.period;
-    if (anyCfgErr()) { toast('Perbaiki input yang ditandai merah dulu.', 'warn'); return; }
+    if (anyCfgErr()) { toast(t('err.fix'), 'warn'); return; }
     const inp = C.liveInputs(S, p);
-    if (!(inp.annual > 0)) { toast('Isi gaji tahunan dulu.', 'warn'); return; }
+    if (!(inp.annual > 0)) { toast(t('err.annual'), 'warn'); return; }
     const info = C.statusInfo(S, p);
-    if (info.status === 'saved') { toast('Sudah tersimpan.', 'ok'); return; }
+    if (info.status === 'saved') { toast(t('sv.already'), 'ok'); return; }
     busy.save = true;
     const go = info.status === 'changed'
-      ? confirmModal('Timpa riwayat ' + C.periodLabel(p) + '?', info.daOnly
-        ? 'Hari kerja di bulan lain berubah, jadi Annual Day Account di slip ini ikut berubah. Simpan versi terbaru?'
-        : 'Data tersimpan sebelumnya akan diganti dengan perhitungan saat ini.', 'Timpa')
+      ? confirmModal(t('sv.title', { p: C.periodLabel(p) }), info.daOnly ? t('sv.daText') : t('sv.text'), t('sv.btn'))
       : Promise.resolve(true);
     go.then(function (ok) {
       if (!ok) return;
@@ -2002,7 +2476,7 @@ var App = (function () {
       if (!(fresh.annual > 0)) return;
       S.history[p] = C.makeSnapshot(fresh, new Date().toISOString());
       S.months[p] = { annual: fresh.annual, insurance: fresh.insurance, pension: fresh.pension };
-      if (persist()) toast('Tersimpan ke riwayat: ' + C.periodLabel(p), 'ok');
+      if (persist()) toast(t('sv.done', { p: C.periodLabel(p) }), 'ok');
       if (view.period === p && view.tab === 'bulan') { renderCfgBox(); renderStatus(); }
     }).finally(function () { busy.save = false; });
   }
@@ -2011,24 +2485,24 @@ var App = (function () {
     const p = view.period;
     if (!S.history[p]) return;
     busy.revert = true;
-    confirmModal('Kembalikan ' + C.periodLabel(p) + '?', 'Kalender, gaji tetap, claim, dan slopchest bulan ini dikembalikan ke versi yang tersimpan di riwayat.', 'Kembalikan').then(function (ok) {
+    confirmModal(t('rv.title', { p: C.periodLabel(p) }), t('rv.text'), t('rv.btn')).then(function (ok) {
       if (!ok) return;
       C.restoreSnapshot(S, p);
       persist();
       if (view.period === p) renderBulan(true);
-      toast('Dikembalikan ke versi tersimpan.', 'ok');
+      toast(t('rv.done'), 'ok');
     }).finally(function () { busy.revert = false; });
   }
   function deleteHistory(p) {
     if (isModalOpen() || busy.del) return;
     if (!S.history[p]) return;
     busy.del = true;
-    confirmModal('Hapus riwayat ' + C.periodLabel(p) + '?', 'Hanya riwayatnya yang dihapus. Tanggal di kalender, claim, dan slopchest bulan itu tetap ada.', 'Hapus', true).then(function (ok) {
+    confirmModal(t('dh.title', { p: C.periodLabel(p) }), t('dh.text'), t('dh.btn'), true).then(function (ok) {
       if (!ok || !S.history[p]) return;
       delete S.history[p];
       persist();
       renderTab(view.tab);
-      toast('Riwayat ' + C.periodLabel(p) + ' dihapus.', 'ok');
+      toast(t('dh.done', { p: C.periodLabel(p) }), 'ok');
     }).finally(function () { busy.del = false; });
   }
 
@@ -2041,26 +2515,27 @@ var App = (function () {
     const planned = Object.keys(S.days).filter(function (k) { return k.slice(0, 4) === String(y) && k > td && (S.days[k] === 'ON' || (r.daTravel && S.days[k] !== 'ON')); }).length;
     const need = Math.floor(a.short + 1e-9) + 1;
     let h = '<div class="panel-h"><h2>Annual Day Account ' + y + '</h2></div>';
-    h += '<div class="da-big"><b id="daCounted">' + C.fmtDays(a.counted) + '</b><span>hari dihitung dari expected ' + C.fmtDays(a.expected) + ' hari</span></div>';
+    h += '<div class="da-big"><b id="daCounted">' + C.fmtDays(a.counted) + '</b><span>' + t('da.counted', { n: a.counted, e: C.fmtDays(a.expected) }) + '</span></div>';
     h += gaugeHtml(a) + '<div class="gauge-l"><span>0</span><span>' + C.fmtDays(a.expected) + '</span></div>';
     h += '<div class="cal-counts"><span class="chip on">ON ' + a.on + '</span><span class="chip ton">Travel ON ' + a.ton + '</span><span class="chip toff">Travel OFF ' + a.toff + '</span>' +
-      '<span class="chip">' + (a.travel ? 'Travel ikut dihitung' : 'Hanya ON yang dihitung') + '</span></div>';
-    const payTxt = a.payPeriod ? 'dibayar bersama gaji ' + C.periodLabel(a.payPeriod) : 'di luar rentang tahun aplikasi';
+      (a.visa ? '<span class="chip visa">Visa ' + a.visa + '</span>' : '') + (a.med ? '<span class="chip med">Medical ' + a.med + '</span>' : '') +
+      '<span class="chip">' + (a.travel ? t('da.travelOn') : t('da.travelOff')) + '</span></div>';
+    const payTxt = a.payPeriod ? t('da.payWith', { p: C.periodLabel(a.payPeriod) }) : t('da.payOut');
     let v;
     if (a.diff > 0) {
-      v = '<div class="da-verdict over" id="daVerdict">Lebih <b>' + C.fmtDays(a.excess) + ' hari</b>, berhak tambahan gaji.' +
+      v = '<div class="da-verdict over" id="daVerdict">' + t('da.over', { x: C.fmtDays(a.excess), n: a.excess }) +
         (a.annual > 0
           ? '<p>' + C.fmtDays(a.excess) + ' × ' + C.fmtDays(a.rate) + '% × daily rate ' + C.fmtMoney(a.dr) + ' = <b>' + C.fmtMoney(a.amount) + '</b>, ' + esc(payTxt) + '.</p>'
-          : '<p>Isi gaji tahunan untuk menghitung nominal tambahan.</p>') + '</div>';
+          : '<p>' + t('da.noAnnual') + '</p>') + '</div>';
     } else if (a.diff === 0) {
-      v = '<div class="da-verdict under" id="daVerdict">Tepat <b>' + C.fmtDays(a.expected) + ' hari</b>. Tidak ada kelebihan hari.</div>';
+      v = '<div class="da-verdict under" id="daVerdict">' + t('da.exact', { e: C.fmtDays(a.expected) }) + '</div>';
     } else {
-      v = '<div class="da-verdict under" id="daVerdict">Kurang <b>' + C.fmtDays(a.short) + ' hari</b> dari ' + C.fmtDays(a.expected) + '. Belum ada tambahan gaji.' +
-        (ended ? '' : '<p>Butuh ' + need + ' hari kerja lagi supaya ada kelebihan.</p>') + '</div>';
+      v = '<div class="da-verdict under" id="daVerdict">' + t('da.under', { x: C.fmtDays(a.short), n: a.short, e: C.fmtDays(a.expected) }) +
+        (ended ? '' : '<p>' + t('da.need', { n: need }) + '</p>') + '</div>';
     }
     h += v;
-    if (!ended) h += '<p class="tiny">Tahun ' + y + ' belum selesai. Angka di atas dari tanggal yang sudah ditandai' + (planned ? ', termasuk ' + planned + ' hari yang direncanakan setelah hari ini' : '') + '.</p>';
-    if (a.slipPeriod) h += '<div class="row-btns"><button type="button" class="btn sm" id="btnOpenDaSlip" data-period="' + a.slipPeriod + '">Buka slip ' + esc(C.periodLabel(a.slipPeriod)) + '</button></div>';
+    if (!ended) h += '<p class="tiny">' + t('da.notOver', { y: y, n: planned }) + '</p>';
+    if (a.slipPeriod) h += '<div class="row-btns"><button type="button" class="btn sm" id="btnOpenDaSlip" data-period="' + a.slipPeriod + '">' + esc(t('da.openSlip', { p: C.periodLabel(a.slipPeriod) })) + '</button></div>';
     $('daSummary').innerHTML = h;
   }
   function renderDaRules(force) {
@@ -2096,7 +2571,7 @@ var App = (function () {
         if (d > dim) { h += '<i class="x"></i>'; continue; }
         const k = C.ymd(y, m, d);
         const v = S.days[k];
-        h += '<i class="' + (v === 'ON' ? 'on' : v === 'TON' ? 'ton' : v === 'TOFF' ? 'toff' : 'off') + (k === td ? ' today' : '') + '"></i>';
+        h += '<i class="' + (DAY_CLASS[v] || 'off') + (k === td ? ' today' : '') + '"></i>';
       }
       h += '</div>';
     }
@@ -2110,14 +2585,15 @@ var App = (function () {
       const info = C.statusInfo(S, p);
       const d = C.daysOf(S.days, p);
       const live = C.liveInputs(S, p);
-      const hasData = !!snap || d.on.length + d.ton.length + d.toff.length > 0 || live.claims.length > 0 || live.slop.length > 0;
+      const hasData = !!snap || d.on.length + d.ton.length + d.toff.length + d.visa.length + d.med.length > 0 || live.claims.length > 0 || live.slop.length > 0;
       let net = '<span class="ym-n est">–</span>';
       if (snap) net = '<span class="ym-n">' + C.fmtMoney(C.calc(snap).net) + '</span>';
       else if (hasData && live.annual > 0) net = '<span class="ym-n est">' + C.fmtMoney(C.calc(live).net) + '</span>';
-      const st = info.status === 'saved' ? '<small class="saved">✓ Tersimpan</small>' : info.status === 'changed' ? '<small class="changed">Berubah, belum disimpan ulang</small>' : '<small>' + (hasData ? 'Belum disimpan' : 'Kosong') + '</small>';
+      const st = info.status === 'saved' ? '<small class="saved">' + t('ym.saved') + '</small>' : info.status === 'changed' ? '<small class="changed">' + t('ym.changed') + '</small>' : '<small>' + (hasData ? t('ym.none') : t('ym.empty')) + '</small>';
       const trv = d.ton.length + d.toff.length;
+      const vm = d.visa.length + d.med.length;
       h += '<button type="button" class="ym-row" data-period="' + p + '"><span class="ym-m"><b>' + C.MONTHS[m - 1] + '</b>' + st + '</span>' +
-        '<span class="ym-d">' + (d.on.length ? '<span class="chip on">ON ' + d.on.length + '</span>' : '') + (trv ? '<span class="chip ton">Trv ' + trv + '</span>' : '') + '</span>' + net + '</button>';
+        '<span class="ym-d">' + (d.on.length ? '<span class="chip on">ON ' + d.on.length + '</span>' : '') + (trv ? '<span class="chip ton">Trv ' + trv + '</span>' : '') + (vm ? '<span class="chip visa">V/M ' + vm + '</span>' : '') + '</span>' + net + '</button>';
     }
     $('yearMonths').innerHTML = h;
   }
@@ -2126,11 +2602,11 @@ var App = (function () {
     $('histGroup').value = view.histGroup;
     const s = C.historySummary(S, y, view.histGroup);
     const box = $('yearTotals');
-    if (!s.count) { box.innerHTML = '<p class="empty" style="padding:10px">Belum ada bulan tersimpan di ' + y + '. Simpan bulan dari tab Bulan.</p>'; return; }
-    box.innerHTML = '<div class="sum-grid">' + sumCell('Total diterima', C.fmtMoney(s.net), true) + sumCell('Gaji kotor', C.fmtMoney(s.gross)) +
-      sumCell('Asuransi + pension', C.fmtMoney(s.deductions)) + sumCell('Slopchest', C.fmtMoney(s.slop)) +
-      sumCell('Claim expenses', C.fmtMoney(s.claims)) + sumCell('Day Account dibayar', C.fmtMoney(s.daPay)) + '</div>' +
-      '<p class="tiny">Dari ' + s.count + ' bulan tersimpan, dikelompokkan ' + (view.histGroup === 'pay' ? 'per bulan dibayar' : 'per periode kerja') + '.</p>';
+    if (!s.count) { box.innerHTML = '<p class="empty" style="padding:10px">' + t('tot.empty', { y: y }) + '</p>'; return; }
+    box.innerHTML = '<div class="sum-grid">' + sumCell(t('tot.net'), C.fmtMoney(s.net), true) + sumCell(t('tot.gross'), C.fmtMoney(s.gross)) +
+      sumCell(t('tot.ded'), C.fmtMoney(s.deductions)) + sumCell('Slopchest', C.fmtMoney(s.slop)) +
+      sumCell('Claim expenses', C.fmtMoney(s.claims)) + sumCell(t('tot.da'), C.fmtMoney(s.daPay)) + '</div>' +
+      '<p class="tiny">' + t('tot.note', { n: s.count, pay: view.histGroup === 'pay' }) + '</p>';
   }
   function renderTahun() {
     const y = view.year;
@@ -2178,20 +2654,20 @@ var App = (function () {
     document.querySelectorAll('input[name="exMode"]').forEach(function (r) { r.checked = r.value === view.exMode; });
     $('optDates').classList.toggle('sel', view.exMode === 'dates');
     $('optFull').classList.toggle('sel', view.exMode === 'full');
-    $('btnExport').textContent = view.exMode === 'full' ? 'Download PDF (lengkap)' : 'Download PDF (tanggal)';
+    $('btnExport').textContent = view.exMode === 'full' ? t('ex.btnFull') : t('ex.btnDates');
     renderExportInfo();
   }
   function readExportRange() {
     view.exFrom = C.pkey(+$('exFromY').value, +$('exFromM').value);
     view.exTo = C.pkey(+$('exToY').value, +$('exToM').value);
   }
-  function shortList(ps) { return ps.slice(0, 12).map(C.periodShort).join(', ') + (ps.length > 12 ? ' dan ' + (ps.length - 12) + ' lainnya' : ''); }
+  function shortList(ps) { return ps.slice(0, 12).map(C.periodShort).join(', ') + (ps.length > 12 ? t('list.more', { n: ps.length - 12 }) : ''); }
   function renderExportInfo() {
     const from = view.exFrom, to = view.exTo;
     const info = $('exInfo'), btn = $('btnExport'), sh = $('btnShare');
     sh.hidden = !canShareFiles();
     if (!C.parsePeriod(from) || !C.parsePeriod(to) || from > to) {
-      info.innerHTML = '<p class="banner warn">Bulan "Dari" harus sebelum atau sama dengan "Sampai".</p>';
+      info.innerHTML = '<p class="banner warn">' + esc(t('ex.order')) + '</p>';
       btn.disabled = true; sh.disabled = true;
       return;
     }
@@ -2200,11 +2676,11 @@ var App = (function () {
     const missing = ps.filter(function (p) { return !S.history[p]; });
     const changed = saved.filter(function (p) { return C.status(S, p) === 'changed'; });
     let h;
-    if (!saved.length) h = '<p class="banner warn">Belum ada bulan tersimpan di rentang ini. Simpan dulu perhitungan bulanannya di tab Bulan.</p>';
+    if (!saved.length) h = '<p class="banner warn">' + t('ex.none') + '</p>';
     else {
-      h = '<p><b>' + saved.length + '</b> dari ' + ps.length + ' bulan dalam rentang sudah tersimpan dan akan masuk PDF.</p>';
-      if (missing.length) h += '<p class="tiny">Belum disimpan (tidak masuk PDF): ' + shortList(missing) + '</p>';
-      if (changed.length) h += '<p class="banner warn">' + changed.length + ' bulan punya perubahan yang belum disimpan (' + shortList(changed) + '). PDF memakai versi yang tersimpan.</p>';
+      h = '<p>' + t('ex.count', { n: saved.length, m: ps.length }) + '</p>';
+      if (missing.length) h += '<p class="tiny">' + esc(t('ex.missing', { l: shortList(missing) })) + '</p>';
+      if (changed.length) h += '<p class="banner warn">' + esc(t('ex.changed', { n: changed.length, l: shortList(changed) })) + '</p>';
     }
     info.innerHTML = h;
     const dis = !saved.length || !!busy.export;
@@ -2218,7 +2694,7 @@ var App = (function () {
     const ps = C.periodsBetween(from, to);
     const snaps = ps.filter(function (p) { return S.history[p]; }).map(function (p) { return S.history[p]; });
     const missing = ps.filter(function (p) { return !S.history[p]; });
-    if (!snaps.length) { toast('Tidak ada riwayat tersimpan di rentang ini.', 'warn'); return; }
+    if (!snaps.length) { toast(t('ex.noSaved'), 'warn'); return; }
     busy.export = true;
     $('btnExport').disabled = true; $('btnShare').disabled = true;
     try {
@@ -2226,10 +2702,10 @@ var App = (function () {
       const name = Report.fileName(view.exMode, from, to);
       const blob = new Blob([bytes], { type: 'application/pdf' });
       if (share) shareOrDownload(blob, name);
-      else { downloadBlob(blob, name); toast('PDF dibuat: ' + name, 'ok', 3500); }
+      else { downloadBlob(blob, name); toast(t('ex.done', { n: name }), 'ok', 3500); }
     } catch (err) {
       if (window.console) console.error(err);
-      toast('Gagal membuat PDF. ' + (err && err.message ? err.message : ''), 'err', 5000);
+      toast(t('ex.fail') + (err && err.message ? err.message : ''), 'err', 5000);
     } finally {
       setTimeout(function () { busy.export = false; renderExportInfo(); }, 900);
     }
@@ -2237,10 +2713,9 @@ var App = (function () {
 
   /* ----- LAINNYA ----- */
   function renderData() {
-    $('appVersion').textContent = VERSION;
     let size = 0;
     try { size = (localStorage.getItem(KEY) || '').length; } catch (e) { size = 0; }
-    $('storageSize').textContent = (size / 1024).toFixed(1) + ' KB';
+    $('verLine').innerHTML = esc(t('ver', { v: VERSION, s: C.fmtNum(size / 1024, 1) + ' KB' })).replace(/v(\d+\.\d+\.\d+)/, 'v<span id="appVersion">$1</span>').replace(/([\d.,]+ KB)$/, '<span id="storageSize">$1</span>');
   }
   function doBackup() {
     if (locked('backup', 1500)) return;
@@ -2248,7 +2723,7 @@ var App = (function () {
     const payload = { app: 'gaji-rotasi', version: 2, exportedAt: d.toISOString(), data: S };
     const blob = new Blob([JSON.stringify(payload, null, 1)], { type: 'application/json' });
     downloadBlob(blob, 'gaji-rotasi-backup-' + C.ymd(d.getFullYear(), d.getMonth() + 1, d.getDate()) + '.json');
-    toast('Backup dibuat.', 'ok');
+    toast(t('bk.done'), 'ok');
   }
   function resetView() {
     view.period = S.ui.period || nowPeriod();
@@ -2260,58 +2735,76 @@ var App = (function () {
     if (!f || busy.restore || isModalOpen()) return;
     busy.restore = true;
     Promise.resolve().then(function () {
-      if (f.size > 5 * 1024 * 1024) throw new Error('File terlalu besar (maksimal 5 MB).');
+      if (f.size > 5 * 1024 * 1024) throw new Error(t('rs.big'));
       return readFileText(f);
     }).then(function (text) {
       let obj;
-      try { obj = JSON.parse(text); } catch (e) { throw new Error('File bukan JSON yang valid.'); }
-      if (!obj || obj.app !== 'gaji-rotasi' || typeof obj.data !== 'object' || obj.data === null) throw new Error('File ini bukan backup Gaji Rotasi.');
+      try { obj = JSON.parse(text); } catch (e) { throw new Error(t('rs.json')); }
+      if (!obj || obj.app !== 'gaji-rotasi' || typeof obj.data !== 'object' || obj.data === null) throw new Error(t('rs.notOurs'));
       const r = C.sanitizeState(obj.data);
       const nh = Object.keys(r.state.history).length, nd = Object.keys(r.state.days).length;
-      return confirmModal('Pulihkan backup?', 'Backup berisi ' + nh + ' bulan riwayat dan ' + nd + ' tanggal ON/Travel' + (r.dropped ? ' (' + r.dropped + ' entri tidak valid akan diabaikan)' : '') + '. Semua data di perangkat ini akan diganti.', 'Pulihkan', true)
+      return confirmModal(t('rs.title'), t('rs.text', { h: nh, d: nd, x: r.dropped }), t('rs.btn'), true)
         .then(function (ok) {
           if (!ok) return;
           S = r.state;
+          useLang(lang);
           persist();
           resetView();
           renderDaRules(true);
+          applyStatic();
           renderTab(view.tab);
-          toast('Backup dipulihkan.', 'ok');
+          toast(t('rs.done'), 'ok');
         });
-    }).catch(function (err) { toast(err.message || 'Gagal memulihkan backup.', 'err', 5000); })
+    }).catch(function (err) { toast(err.message || t('rs.fail'), 'err', 5000); })
       .finally(function () { busy.restore = false; });
   }
   function wipe() {
     if (isModalOpen() || busy.wipe) return;
     busy.wipe = true;
-    confirmModal('Hapus semua data?', 'Kalender, claim, slopchest, gaji tetap, aturan Day Account, dan seluruh riwayat akan dihapus dari perangkat ini. Disarankan download backup dulu.', 'Hapus semua', true).then(function (ok) {
+    confirmModal(t('wp.title'), t('wp.text'), t('wp.btn'), true).then(function (ok) {
       if (!ok) return;
       S = C.emptyState();
+      useLang(lang);
       persist();
       resetView();
       renderDaRules(true);
+      applyStatic();
       renderTab(view.tab);
-      toast('Semua data dihapus.', 'ok');
+      toast(t('wp.done'), 'ok');
     }).finally(function () { busy.wipe = false; });
+  }
+  function switchLang(l) {
+    if (l !== 'id' && l !== 'en') return;
+    if (l === lang) return;
+    const keepOpen = view.cfgOpen;
+    useLang(l);
+    persist();
+    applyStatic();
+    if (view.tab === 'bulan') {
+      renderBulan(true);
+      if (keepOpen) { view.cfgOpen = true; renderCfgBox(); }
+    } else renderTab(view.tab);
+    renderDaRules(true);
   }
 
   /* ----- tabs & init ----- */
-  function renderTab(t) {
-    if (t === 'bulan') renderBulan(true);
-    else if (t === 'tahun') renderTahun();
-    else if (t === 'export') renderExport();
+  function renderTab(tb) {
+    if (tb === 'bulan') renderBulan(true);
+    else if (tb === 'tahun') renderTahun();
+    else if (tb === 'export') renderExport();
     else renderData();
   }
-  function switchTab(t) {
-    if (TABS.indexOf(t) < 0) return;
-    view.tab = t;
-    document.body.classList.toggle('on-bulan', t === 'bulan');
-    document.querySelectorAll('section.tab').forEach(function (s) { s.hidden = s.dataset.tab !== t; });
-    document.querySelectorAll('.tabbar button').forEach(function (b) { b.setAttribute('aria-selected', String(b.dataset.tab === t)); });
-    renderTab(t);
+  function switchTab(tb) {
+    if (TABS.indexOf(tb) < 0) return;
+    view.tab = tb;
+    document.body.classList.toggle('on-bulan', tb === 'bulan');
+    document.querySelectorAll('section.tab').forEach(function (s) { s.hidden = s.dataset.tab !== tb; });
+    document.querySelectorAll('.tabbar button').forEach(function (b) { b.setAttribute('aria-selected', String(b.dataset.tab === tb)); });
+    renderTab(tb);
     window.scrollTo(0, 0);
   }
   function bind() {
+    $('langSwitch').addEventListener('click', function (e) { const b = e.target.closest('button[data-lang]'); if (b && !isModalOpen()) switchLang(b.dataset.lang); });
     document.querySelector('.tabbar').addEventListener('click', function (e) {
       const b = e.target.closest('button[data-tab]');
       if (!b) return;
@@ -2350,7 +2843,6 @@ var App = (function () {
     $('yearNext').addEventListener('click', function () { setYear(view.year + 1); });
     $('yearMonths').addEventListener('click', function (e) { const b = e.target.closest('button[data-period]'); if (b) openPeriod(b.dataset.period); });
     $('histGroup').addEventListener('change', function () { view.histGroup = $('histGroup').value === 'pay' ? 'pay' : 'work'; renderYearTotals(view.year); });
-    $('inDaPayMonth').innerHTML = C.MONTHS.map(function (m, i) { return '<option value="' + (i + 1) + '">' + m + '</option>'; }).join('');
     Object.keys(DA_RULE).forEach(function (k) {
       const el = $(DA_RULE[k].id);
       el.addEventListener('input', function () { onDaRule(k); });
@@ -2368,7 +2860,7 @@ var App = (function () {
     $('exThisYear').addEventListener('click', function () { const y = nowPeriod().slice(0, 4); view.exFrom = y + '-01'; view.exTo = y + '-12'; renderExport(); });
     $('exAll').addEventListener('click', function () {
       const keys = Object.keys(S.history).sort();
-      if (!keys.length) { toast('Belum ada riwayat.', 'warn'); return; }
+      if (!keys.length) { toast(t('ex.noHist'), 'warn'); return; }
       view.exFrom = keys[0]; view.exTo = keys[keys.length - 1]; renderExport();
     });
     document.querySelectorAll('input[name="exMode"]').forEach(function (r) { r.addEventListener('change', function () { if (r.checked) { view.exMode = r.value === 'full' ? 'full' : 'dates'; renderExport(); } }); });
@@ -2383,7 +2875,19 @@ var App = (function () {
       try { raw = localStorage.getItem(KEY); } catch (err) { return; }
       loadFromRaw(raw, true);
       if (!C.parsePeriod(view.period)) view.period = nowPeriod();
+      useLang(S.ui.lang || lang);
+      applyStatic();
       if (!isModalOpen()) renderTab(view.tab);
+    });
+  }
+  // tandai navigator bulan/tahun saat menempel di atas (bayangan halus)
+  function watchSticky() {
+    if (!('IntersectionObserver' in window)) return;
+    document.querySelectorAll('.nav-sentinel').forEach(function (sen) {
+      const bar = sen.nextElementSibling;
+      new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) { bar.classList.toggle('stuck', !en.isIntersecting && en.boundingClientRect.top < 0); });
+      }, { threshold: 0 }).observe(sen);
     });
   }
   function registerSW() {
@@ -2393,12 +2897,16 @@ var App = (function () {
   }
   function init() {
     load();
+    useLang(detectLang(hadStored));
     resetView();
+    applyStatic();
     bind();
     switchTab('bulan');
+    watchSticky();
+    if (pendingToast) { toast(t(pendingToast[0], pendingToast[1]), pendingToast[2], pendingToast[3]); pendingToast = null; }
     registerSW();
   }
-  return { init: init, version: VERSION, snapshot: function () { return JSON.parse(JSON.stringify(S)); } };
+  return { init: init, version: VERSION, lang: function () { return lang; }, snapshot: function () { return JSON.parse(JSON.stringify(S)); } };
 })();
 window.GajiRotasi = App;
 App.init();

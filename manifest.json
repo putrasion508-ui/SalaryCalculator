@@ -1,7 +1,7 @@
 {
-  "name": "Gaji Rotasi - Kalkulator ON/OFF",
-  "short_name": "Gaji Rotasi",
-  "description": "Kalkulator gaji rotasi offshore: ON 130%, OFF 70%, Travel 100%, dengan riwayat dan export PDF.",
+  "name": "Salary Calculator",
+  "short_name": "Salary Calc",
+  "description": "Salary calculator for offshore ON/OFF rotation: ON 130%, OFF 70%, Travel/Visa/Medical 100%, Annual Day Account, history and PDF export.",
   "lang": "id",
   "start_url": "./",
   "scope": "./",
